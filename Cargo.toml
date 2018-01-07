@@ -4,3 +4,5 @@ version = "0.1.0"
 authors = ["hatoo <hato2000@gmail.com>"]
 
 [dependencies]
+cargo-snippet = { path = "../cargo-snippet" }
+rand = "0.4"

@@ -1,7 +1,16 @@
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}
+#![feature(plugin)]
+#![plugin(cargo_snippet)]
+
+extern crate rand;
+
+mod flow;
+mod rev;
+mod total;
+mod modulo;
+mod segtree;
+mod bit_simple;
+mod bit;
+mod uft;
+mod binary_search;
+mod manacher;
+mod lexical_permutation;
