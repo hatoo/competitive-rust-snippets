@@ -1,0 +1,6 @@
+[package]
+name = "competitive-rust-snippets"
+version = "0.1.0"
+authors = ["hatoo <hato2000@gmail.com>"]
+
+[dependencies]
