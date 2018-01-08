@@ -15,3 +15,4 @@ mod binary_search;
 mod manacher;
 mod lexical_permutation;
 mod misc;
+mod rolling_hash;
