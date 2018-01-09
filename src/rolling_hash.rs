@@ -1,43 +1,49 @@
 #[snippet = "RollingHash"]
 #[allow(dead_code)]
 struct RollingHash {
-    hash: Vec<u64>,
-    pow: Vec<u64>,
+    hash_pow_list: Vec<(u64, Vec<(u64, u64)>)>,
 }
 
 #[snippet = "RollingHash"]
 #[allow(dead_code)]
 impl RollingHash {
-    const M: u64 = 1000000007;
-    const B: u64 = 1009;
-
     fn new(s: &[u64]) -> RollingHash {
-        let mut hash = Vec::with_capacity(s.len() + 1);
-        let mut pow = Vec::with_capacity(s.len() + 1);
+        RollingHash::with_base_mod_pairs(s, &[(1009, 1000000007), (9973, 999999937)])
+    }
 
-        hash.push(0);
-        pow.push(1);
+    fn with_base_mod_pairs(s: &[u64], base_mod_pairs: &[(u64, u64)]) -> RollingHash {
+        let hp_list = base_mod_pairs
+            .iter()
+            .map(|&(base, m)| {
+                let mut hp = Vec::with_capacity(s.len() + 1);
+                hp.push((0, 1));
 
-        for (i, &x) in s.iter().enumerate() {
-            let h = hash[i];
-            let p = pow[i];
-            hash.push((h + x) * Self::B % Self::M);
-            pow.push(p * Self::B % Self::M);
-        }
+                for (i, &x) in s.iter().enumerate() {
+                    let (h, p) = hp[i];
+                    hp.push(((h + x) * base % m, p * base % m));
+                }
+                (m, hp)
+            })
+            .collect();
 
         RollingHash {
-            hash: hash,
-            pow: pow,
+            hash_pow_list: hp_list,
         }
     }
 
     // [l, r)
     fn get(&self, l: usize, r: usize) -> u64 {
-        (self.hash[r] + Self::M - self.hash[l] * self.pow[r - l] % Self::M) % Self::M
+        self.hash_pow_list
+            .iter()
+            .map(|&(m, ref hp)| (hp[r].0 + m - hp[l].0 * hp[r - l].1 % m) % m)
+            .fold(0, |a, b| a ^ b)
     }
 
     fn len(&self) -> usize {
-        self.hash.len() - 1
+        self.hash_pow_list
+            .first()
+            .map(|v| v.1.len() - 1)
+            .unwrap_or(0)
     }
 }
 
@@ -49,4 +55,5 @@ fn test_rolling_hash() {
 
     assert_eq!(rh.get(0, 3), rh.get(3, 6));
     assert_ne!(rh.get(0, 4), rh.get(3, 6));
+    assert_ne!(rh.get(0, 3), rh.get(2, 5));
 }
