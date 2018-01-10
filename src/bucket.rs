@@ -153,6 +153,8 @@ impl BucketImpl for RangeAddQueryMax {
 #[test]
 fn test_range_add_query_max() {
     use rand::{Rng, SeedableRng, StdRng};
+    use util::random_range;
+
     // Test against naive vector
     let size = 1000;
     let mut vec = vec![0; size];
@@ -162,25 +164,19 @@ fn test_range_add_query_max() {
 
     for _ in 0..1000 {
         // Add
-        let a = rng.next_u32() as usize % size;
-        let b = rng.next_u32() as usize % size;
-
-        let l = min(a, b);
-        let r = max(a, b);
-
         let delta = rng.next_u32() as u64 % 256;
 
-        for i in l..r {
+        let range = random_range(&mut rng, 0, size);
+        for i in range.clone() {
             vec[i] += delta;
         }
-        bucket.add(l, r, &delta);
+        bucket.add(range.start, range.end, &delta);
         // Sum
-        let a = rng.next_u32() as usize % size;
-        let b = rng.next_u32() as usize % size;
+        let range = random_range(&mut rng, 0, size);
 
-        let l = min(a, b);
-        let r = max(a, b);
-
-        assert_eq!(bucket.sum(l, r), vec[l..r].iter().max().cloned());
+        assert_eq!(
+            bucket.sum(range.start, range.end),
+            vec[range].iter().max().cloned()
+        );
     }
 }

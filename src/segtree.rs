@@ -72,10 +72,12 @@ impl<T: Clone, F: Fn(&T, &T) -> T> SEG<T, F> {
     }
 }
 
+
 #[test]
 fn test_segtree_vs_cumulative_sum() {
     use rand::{Rng, SeedableRng, StdRng};
-    use std::cmp::{max, min};
+    use util::random_range;
+
     let size = 1000;
     let mut cum_sum = vec![0; size + 1];
     let mut seg = SEG::new(size, &0, |&a, &b| a + b);
@@ -91,13 +93,8 @@ fn test_segtree_vs_cumulative_sum() {
     }
 
     for _ in 0..1000 {
-        let a = rng.next_u32() as usize % size;
-        let b = rng.next_u32() as usize % size;
-
-        let l = min(a, b);
-        let r = max(a, b);
-
-        assert_eq!(seg.query(l, r), cum_sum[r] - cum_sum[l]);
+        let r = random_range(&mut rng, 0, size);
+        assert_eq!(seg.query(r.start, r.end), cum_sum[r.end] - cum_sum[r.start]);
     }
 }
 
