@@ -13,20 +13,19 @@ struct Bucket<I: BucketImpl> {
 #[snippet = "Bucket"]
 impl<I: BucketImpl> Bucket<I>
 where
-    I::Elem: Clone,
     I::Parent: Clone,
 {
     #[allow(dead_code)]
-    fn new(init: &[I::Elem]) -> Self {
-        let sqrt = (1..).find(|x| x * x >= init.len()).unwrap();
-        let mut parent = vec![I::init_parent(); sqrt];
+    fn new(init_elem: Vec<I::Elem>, init_parent: I::Parent) -> Self {
+        let sqrt = (1..).find(|x| x * x >= init_elem.len()).unwrap();
+        let mut parent = vec![init_parent; sqrt];
 
-        for (i, e) in init.iter().enumerate() {
+        for (i, e) in init_elem.iter().enumerate() {
             I::reduce_parent(&mut parent[i / sqrt], e);
         }
 
         Self {
-            buf: init.into(),
+            buf: init_elem,
             parent: parent,
             sqrt: sqrt,
             phantom_i: std::marker::PhantomData,
@@ -101,7 +100,6 @@ trait BucketImpl {
     type A;
     type R;
 
-    fn init_parent() -> Self::Parent;
     fn reduce_parent(&mut Self::Parent, &Self::Elem);
 
     fn add(&mut Self::Parent, &mut Self::Elem, &Self::A);
@@ -124,10 +122,6 @@ impl BucketImpl for RangeAddQueryMax {
     type Parent = (u64, u64);
     type A = u64;
     type R = u64;
-
-    fn init_parent() -> Self::Parent {
-        (0, 0)
-    }
 
     fn reduce_parent(p: &mut Self::Parent, e: &Self::Elem) {
         p.0 = max(p.1 + e, p.0);
@@ -162,7 +156,7 @@ fn test_range_add_query_max() {
     // Test against naive vector
     let size = 1000;
     let mut vec = vec![0; size];
-    let mut bucket: Bucket<RangeAddQueryMax> = Bucket::new(&vec);
+    let mut bucket: Bucket<RangeAddQueryMax> = Bucket::new(vec.clone(), (0, 0));
 
     let mut rng = StdRng::from_seed(&[1, 2, 3]);
 
