@@ -16,6 +16,7 @@ where
     I::Elem: Clone,
     I::Parent: Clone,
 {
+    #[allow(dead_code)]
     fn new(init: &[I::Elem]) -> Self {
         let sqrt = (1..).find(|x| x * x >= init.len()).unwrap();
         let mut parent = vec![I::init_parent(); sqrt];
@@ -33,6 +34,7 @@ where
     }
 
     // (left cut, middle, right_cut)
+    #[allow(dead_code)]
     fn ranges(
         &self,
         l: usize,
@@ -52,10 +54,12 @@ where
         (left, mid, right)
     }
 
+    #[allow(dead_code)]
     fn pe(&mut self, i: usize) -> (&mut I::Parent, &mut I::Elem) {
         (&mut self.parent[i / self.sqrt], &mut self.buf[i])
     }
 
+    #[allow(dead_code)]
     fn range_add(&mut self, l: usize, r: usize, delta: &I::A) {
         let (left, mid, right) = self.ranges(l, r);
 
@@ -68,6 +72,7 @@ where
         }
     }
 
+    #[allow(dead_code)]
     fn query(&mut self, l: usize, r: usize) -> Option<I::R> {
         let (left, mid, right) = self.ranges(l, r);
 
@@ -108,6 +113,7 @@ trait BucketImpl {
 
 
 #[snippet = "Bucket-RangeAddQueryMax"]
+#[allow(dead_code)]
 struct RangeAddQueryMax();
 
 #[snippet = "Bucket-RangeAddQueryMax"]
