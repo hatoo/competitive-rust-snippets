@@ -72,7 +72,9 @@ where
         let (left, mid, right) = self.ranges(l, r);
 
         let mut iter = left.chain(right)
-            .map(|i| I::elem_to_result(&self.buf[i]))
+            .map(|i| {
+                I::elem_to_result(&self.buf[i], &self.parent[i / self.sqrt])
+            })
             .chain(mid.map(|i| I::parent_to_result(&self.parent[i])));
 
         if let Some(mut r) = iter.next() {
@@ -100,14 +102,18 @@ trait BucketImpl {
     fn add_parent(&mut Self::Parent, &Self::A);
 
     fn parent_to_result(&Self::Parent) -> Self::R;
-    fn elem_to_result(&Self::Elem) -> Self::R;
+    fn elem_to_result(&Self::Elem, p: &Self::Parent) -> Self::R;
     fn reduce_result(&mut Self::R, &Self::R);
 }
 
+
+#[snippet = "Bucket-RangeAddQueryMax"]
 struct RangeAddQueryMax();
 
+#[snippet = "Bucket-RangeAddQueryMax"]
 impl BucketImpl for RangeAddQueryMax {
     type Elem = u64;
+    // (max, delta)
     type Parent = (u64, u64);
     type A = u64;
     type R = u64;
@@ -135,11 +141,46 @@ impl BucketImpl for RangeAddQueryMax {
         p.0.clone()
     }
 
-    fn elem_to_result(e: &Self::Elem) -> Self::R {
-        e.clone()
+    fn elem_to_result(e: &Self::Elem, p: &Self::Parent) -> Self::R {
+        e.clone() + p.1.clone()
     }
 
     fn reduce_result(a: &mut Self::R, b: &Self::R) {
         *a = max(*a, *b);
+    }
+}
+
+#[test]
+fn test_range_add_query_max() {
+    use rand::{Rng, SeedableRng, StdRng};
+    // Test against naive vector
+    let size = 1000;
+    let mut vec = vec![0; size];
+    let mut bucket: Bucket<RangeAddQueryMax> = Bucket::new(&vec);
+
+    let mut rng = StdRng::from_seed(&[1, 2, 3]);
+
+    for _ in 0..1000 {
+        // Add
+        let a = rng.next_u32() as usize % size;
+        let b = rng.next_u32() as usize % size;
+
+        let l = min(a, b);
+        let r = max(a, b);
+
+        let delta = rng.next_u32() as u64 % 256;
+
+        for i in l..r {
+            vec[i] += delta;
+        }
+        bucket.range_add(l, r, &delta);
+        // Sum
+        let a = rng.next_u32() as usize % size;
+        let b = rng.next_u32() as usize % size;
+
+        let l = min(a, b);
+        let r = max(a, b);
+
+        assert_eq!(bucket.query(l, r), vec[l..r].iter().max().cloned());
     }
 }
