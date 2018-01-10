@@ -144,11 +144,11 @@ impl BucketImpl for RangeAddQueryMax {
     }
 
     fn parent_to_result(p: &Self::Parent) -> Self::R {
-        p.0.clone()
+        p.0
     }
 
     fn elem_to_result(e: &Self::Elem, p: &Self::Parent) -> Self::R {
-        e.clone() + p.1.clone()
+        e + p.1
     }
 
     fn reduce_result(a: &mut Self::R, b: &Self::R) {
