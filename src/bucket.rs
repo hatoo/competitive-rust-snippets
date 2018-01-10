@@ -60,7 +60,7 @@ where
     }
 
     #[allow(dead_code)]
-    fn range_add(&mut self, l: usize, r: usize, delta: &I::A) {
+    fn add(&mut self, l: usize, r: usize, delta: &I::A) {
         let (left, mid, right) = self.ranges(l, r);
 
         for i in left.chain(right) {
@@ -74,7 +74,7 @@ where
     }
 
     #[allow(dead_code)]
-    fn query(&mut self, l: usize, r: usize) -> Option<I::R> {
+    fn sum(&mut self, l: usize, r: usize) -> Option<I::R> {
         let (left, mid, right) = self.ranges(l, r);
 
         let mut iter = left.chain(right)
@@ -179,7 +179,7 @@ fn test_range_add_query_max() {
         for i in l..r {
             vec[i] += delta;
         }
-        bucket.range_add(l, r, &delta);
+        bucket.add(l, r, &delta);
         // Sum
         let a = rng.next_u32() as usize % size;
         let b = rng.next_u32() as usize % size;
@@ -187,6 +187,6 @@ fn test_range_add_query_max() {
         let l = min(a, b);
         let r = max(a, b);
 
-        assert_eq!(bucket.query(l, r), vec[l..r].iter().max().cloned());
+        assert_eq!(bucket.sum(l, r), vec[l..r].iter().max().cloned());
     }
 }
