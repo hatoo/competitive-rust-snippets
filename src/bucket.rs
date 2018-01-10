@@ -64,7 +64,8 @@ where
         let (left, mid, right) = self.ranges(l, r);
 
         for i in left.chain(right) {
-            I::add(self.pe(i), delta);
+            let (p, e) = self.pe(i);
+            I::add(p, e, delta);
         }
 
         for i in mid {
@@ -103,7 +104,7 @@ trait BucketImpl {
     fn init_parent() -> Self::Parent;
     fn reduce_parent(&mut Self::Parent, &Self::Elem);
 
-    fn add((&mut Self::Parent, &mut Self::Elem), &Self::A);
+    fn add(&mut Self::Parent, &mut Self::Elem, &Self::A);
     fn add_parent(&mut Self::Parent, &Self::A);
 
     fn parent_to_result(&Self::Parent) -> Self::R;
@@ -132,8 +133,7 @@ impl BucketImpl for RangeAddQueryMax {
         p.0 = max(p.1 + e, p.0);
     }
 
-    fn add(pe: (&mut Self::Parent, &mut Self::Elem), v: &Self::A) {
-        let (p, e) = pe;
+    fn add(p: &mut Self::Parent, e: &mut Self::Elem, v: &Self::A) {
         *e += v;
         p.0 = max(p.0, *e + p.1);
     }
