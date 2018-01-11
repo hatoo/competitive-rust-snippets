@@ -24,7 +24,7 @@ where
             I::reduce_parent(&mut parent[i / sqrt], e);
         }
 
-        Self {
+        Bucket {
             buf: init_elem,
             parent: parent,
             sqrt: sqrt,
