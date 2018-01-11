@@ -49,8 +49,8 @@ fn mod_inverse(a: u64, m: u64) -> u64 {
 
 #[allow(dead_code)]
 fn fact_table(len: usize, m: u64) -> Vec<u64> {
-    let mut res = vec![1; len];
-    for i in 1..len {
+    let mut res = vec![1; len + 1];
+    for i in 1..len + 1 {
         res[i] = (i as u64 * res[i - 1]) % m;
     }
     res
@@ -89,4 +89,21 @@ fn mod_comb(n: u64, k: u64, p: u64, fact: &Vec<u64>) -> u64 {
             a1 * mod_inverse(a2 * a3 % p, p) % p
         }
     }
+}
+
+#[allow(dead_code)]
+fn mod_comb_repetition(n: u64, k: u64, p: u64, fact: &Vec<u64>) -> u64 {
+    mod_comb(n - 1 + k, n - 1, p, fact)
+}
+
+#[test]
+fn test_mod_comb_repetition() {
+    let m = 1_000_000_007;
+    let fact = fact_table(200000, m);
+
+    assert_eq!(mod_comb_repetition(10, 2, m, &fact), 55);
+    assert_eq!(mod_comb_repetition(10, 3, m, &fact), 220);
+    assert_eq!(mod_comb_repetition(10, 4, m, &fact), 715);
+    assert_eq!(mod_comb_repetition(400, 296, m, &fact), 546898535);
+    assert_eq!(mod_comb_repetition(100000, 100000, m, &fact), 939733670);
 }
