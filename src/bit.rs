@@ -1,19 +1,19 @@
 #[snippet = "BIT"]
 #[allow(dead_code)]
-struct BIT<T: Clone, F: Fn(&T, &T) -> T> {
+struct BIT<T: Clone, F: Fn(&mut T, &T) -> ()> {
     buf: Vec<T>,
-    f: F,
     zero: T,
+    f: F,
 }
 
 #[snippet = "BIT"]
-impl<T: Clone, F: Fn(&T, &T) -> T> BIT<T, F> {
+impl<T: Clone, F: Fn(&mut T, &T) -> ()> BIT<T, F> {
     #[allow(dead_code)]
     fn new(n: usize, zero: &T, f: F) -> BIT<T, F> {
         BIT {
             buf: vec![zero.clone(); n + 1],
-            f: f,
             zero: zero.clone(),
+            f: f,
         }
     }
 
@@ -22,7 +22,7 @@ impl<T: Clone, F: Fn(&T, &T) -> T> BIT<T, F> {
         let mut i = i;
         let mut s = self.zero.clone();
         while i > 0 {
-            s = (self.f)(&s, &self.buf[i]);
+            (self.f)(&mut s, &self.buf[i]);
             i = i & (i - 1);
         }
         s
@@ -32,11 +32,8 @@ impl<T: Clone, F: Fn(&T, &T) -> T> BIT<T, F> {
     fn add(&mut self, i: usize, x: &T) {
         let mut i = i as i64;
         while i < self.buf.len() as i64 {
-            let y = {
-                let t = &self.buf[i as usize];
-                (self.f)(t, x)
-            };
-            self.buf[i as usize] = y;
+            let t = &mut self.buf[i as usize];
+            (self.f)(t, x);
             i += i & -i;
         }
     }
@@ -47,7 +44,9 @@ fn test_bit_vs_cumsum() {
     use rand::{Rng, SeedableRng, StdRng};
     let size = 1000;
     let mut cum_sum = vec![0; size + 1];
-    let mut bit = BIT::new(size, &0, |&a, &b| a + b);
+    let mut bit = BIT::new(size, &0, |a: &mut usize, b: &usize| {
+        *a += b;
+    });
 
     let mut rng = StdRng::from_seed(&[1, 2, 3]);
 
