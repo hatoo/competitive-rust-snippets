@@ -1,7 +1,9 @@
 #![feature(plugin)]
+#![feature(test)]
 #![plugin(cargo_snippet)]
 
 extern crate rand;
+extern crate test;
 
 mod flow;
 mod rev;
