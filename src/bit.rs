@@ -74,7 +74,7 @@ fn bench_bit_add_sum_100k(b: &mut Bencher) {
     use rand::{Rng, SeedableRng, StdRng};
 
     let size = 100_000;
-    let mut bit = BIT::new(size, &0, |&a, &b| a + b);
+    let mut bit = BIT::new(size, &0, |a: &mut usize, b: &usize| *a += b);
     let mut rng = StdRng::from_seed(&[1, 2, 3]);
 
     let bench_size = 100000;
