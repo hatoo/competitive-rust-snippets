@@ -1,12 +1,14 @@
 use std::cmp::Ordering;
 
 #[snippet = "BinarySearch"]
-trait BinarySearch<T> {
+#[snippet = "lis"]
+pub trait BinarySearch<T> {
     fn lower_bound(&self, &T) -> usize;
     fn upper_bound(&self, &T) -> usize;
 }
 
 #[snippet = "BinarySearch"]
+#[snippet = "lis"]
 impl<T: Ord> BinarySearch<T> for [T] {
     fn lower_bound(&self, x: &T) -> usize {
         let mut low = 0;
