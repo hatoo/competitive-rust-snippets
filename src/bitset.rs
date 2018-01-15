@@ -109,16 +109,16 @@ impl std::ops::Shr<usize> for BitSet {
 }
 
 #[snippet = "BitSet"]
-impl<'a> std::ops::BitAndAssign<&'a Self> for BitSet {
+impl<'a> std::ops::BitAndAssign<&'a BitSet> for BitSet {
     fn bitand_assign(&mut self, rhs: &'a Self) {
         for (a, b) in self.buf.iter_mut().zip(rhs.buf.iter()) {
-            *a &= b;
+            *a &= *b;
         }
     }
 }
 
 #[snippet = "BitSet"]
-impl<'a> std::ops::BitAnd<&'a Self> for BitSet {
+impl<'a> std::ops::BitAnd<&'a BitSet> for BitSet {
     type Output = Self;
     fn bitand(mut self, rhs: &'a Self) -> Self {
         self &= rhs;
@@ -127,16 +127,16 @@ impl<'a> std::ops::BitAnd<&'a Self> for BitSet {
 }
 
 #[snippet = "BitSet"]
-impl<'a> std::ops::BitOrAssign<&'a Self> for BitSet {
+impl<'a> std::ops::BitOrAssign<&'a BitSet> for BitSet {
     fn bitor_assign(&mut self, rhs: &'a Self) {
         for (a, b) in self.buf.iter_mut().zip(rhs.buf.iter()) {
-            *a |= b;
+            *a |= *b;
         }
     }
 }
 
 #[snippet = "BitSet"]
-impl<'a> std::ops::BitOr<&'a Self> for BitSet {
+impl<'a> std::ops::BitOr<&'a BitSet> for BitSet {
     type Output = Self;
     fn bitor(mut self, rhs: &'a Self) -> Self {
         self |= rhs;
@@ -145,16 +145,16 @@ impl<'a> std::ops::BitOr<&'a Self> for BitSet {
 }
 
 #[snippet = "BitSet"]
-impl<'a> std::ops::BitXorAssign<&'a Self> for BitSet {
+impl<'a> std::ops::BitXorAssign<&'a BitSet> for BitSet {
     fn bitxor_assign(&mut self, rhs: &'a Self) {
         for (a, b) in self.buf.iter_mut().zip(rhs.buf.iter()) {
-            *a ^= b;
+            *a ^= *b;
         }
     }
 }
 
 #[snippet = "BitSet"]
-impl<'a> std::ops::BitXor<&'a Self> for BitSet {
+impl<'a> std::ops::BitXor<&'a BitSet> for BitSet {
     type Output = Self;
     fn bitxor(mut self, rhs: &'a Self) -> Self {
         self ^= rhs;
