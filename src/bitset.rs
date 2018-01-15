@@ -243,3 +243,28 @@ fn test_bitset_shr() {
     do_test(6400, 114);
     do_test(6400, 514);
 }
+
+#[cfg(test)]
+use test::Bencher;
+
+#[bench]
+fn bench_bitset_dp(b: &mut Bencher) {
+    use rand::{Rng, SeedableRng, StdRng};
+    let size = 1000;
+    let mut v = Vec::new();
+    let mut rng = StdRng::from_seed(&[3, 2, 1]);
+
+    for _ in 0..size {
+        v.push(rng.next_u32() as usize % size);
+    }
+
+    let sum = v.iter().sum::<usize>();
+    b.iter(|| {
+        let mut bset = BitSet::new(sum + 1);
+        bset.set(0, true);
+
+        for &x in &v {
+            bset |= &(bset.clone() << x);
+        }
+    });
+}
