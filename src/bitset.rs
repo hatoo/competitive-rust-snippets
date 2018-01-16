@@ -49,6 +49,13 @@ impl std::ops::ShlAssign<usize> for BitSet {
         let q = x >> 6;
         let r = x & 63;
 
+        if q > self.buf.len() {
+            for x in self.buf.iter_mut() {
+                *x = 0;
+            }
+            return;
+        }
+
         if r == 0 {
             for i in (q..self.buf.len()).rev() {
                 self.buf[i] = self.buf[i - q];
