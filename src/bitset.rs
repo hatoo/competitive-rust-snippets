@@ -9,6 +9,7 @@ const FALSE: &'static bool = &false;
 #[snippet = "BitSet"]
 struct BitSet {
     buf: Vec<u64>,
+    size: usize,
 }
 
 #[snippet = "BitSet"]
@@ -17,11 +18,13 @@ impl BitSet {
     fn new(size: usize) -> BitSet {
         BitSet {
             buf: vec![0; (size + 63) / 64],
+            size: size,
         }
     }
 
     #[allow(dead_code)]
     fn set(&mut self, i: usize, b: bool) {
+        assert!(i < self.size);
         if b {
             self.buf[i >> 6] |= 1 << (i & 63);
         } else {
@@ -32,6 +35,17 @@ impl BitSet {
     #[allow(dead_code)]
     fn count_ones(&self) -> u32 {
         self.buf.iter().map(|x| x.count_ones()).sum()
+    }
+
+    #[allow(dead_code)]
+    fn chomp(&mut self) {
+        let r = self.size & 63;
+        if r != 0 {
+            if let Some(x) = self.buf.last_mut() {
+                let d = 64 - r;
+                *x = (*x << d) >> d;
+            }
+        }
     }
 }
 
@@ -69,6 +83,8 @@ impl std::ops::ShlAssign<usize> for BitSet {
         for i in 0..q {
             self.buf[i] = 0;
         }
+
+        self.chomp();
     }
 }
 
@@ -146,6 +162,7 @@ impl<'a> std::ops::BitOrAssign<&'a BitSet> for BitSet {
         for (a, b) in self.buf.iter_mut().zip(rhs.buf.iter()) {
             *a |= *b;
         }
+        self.chomp();
     }
 }
 
@@ -164,6 +181,7 @@ impl<'a> std::ops::BitXorAssign<&'a BitSet> for BitSet {
         for (a, b) in self.buf.iter_mut().zip(rhs.buf.iter()) {
             *a ^= *b;
         }
+        self.chomp();
     }
 }
 
@@ -264,6 +282,27 @@ fn test_bitset_shr() {
     do_test(63, 65);
     do_test(6400, 6400);
     do_test(6400, 16400);
+}
+
+#[test]
+fn test_bitset_chomp() {
+    let mut set1 = BitSet::new(4);
+    let mut set2 = BitSet::new(8);
+
+    for i in 0..4 {
+        set1.set(i, true);
+        set2.set(i, true);
+    }
+
+    for i in 4..8 {
+        set2.set(i, true);
+    }
+
+    set1 <<= 2;
+    assert_eq!(set1.count_ones(), 2);
+    assert_eq!((set1.clone() | &set2).count_ones(), 4);
+    assert_eq!((set1.clone() & &set2).count_ones(), 2);
+    assert_eq!((set1.clone() ^ &set2).count_ones(), 2);
 }
 
 #[cfg(test)]
