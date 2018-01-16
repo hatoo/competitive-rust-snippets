@@ -197,7 +197,7 @@ fn test_bitset_shl() {
         for i in (shift..v.len()).rev() {
             v[i] = v[i - shift];
         }
-        for i in 0..shift {
+        for i in 0..std::cmp::min(size, shift) {
             v[i] = false;
         }
 
@@ -210,6 +210,8 @@ fn test_bitset_shl() {
     do_test(6400, 640);
     do_test(6400, 114);
     do_test(6400, 514);
+    do_test(6400, 6400);
+    do_test(6400, 16400);
 }
 
 #[test]
