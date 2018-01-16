@@ -65,6 +65,7 @@ fn test_bit_vs_cumsum() {
     }
 }
 
+#[cfg(test)]
 use test::Bencher;
 
 #[bench]
