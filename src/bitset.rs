@@ -88,6 +88,13 @@ impl std::ops::ShrAssign<usize> for BitSet {
         let q = x >> 6;
         let r = x & 63;
 
+        if q >= self.buf.len() {
+            for x in self.buf.iter_mut() {
+                *x = 0;
+            }
+            return;
+        }
+
         if r == 0 {
             for i in 0..self.buf.len() - q {
                 self.buf[i] = self.buf[i + q];
@@ -235,10 +242,13 @@ fn test_bitset_shr() {
             v[i] = b;
         }
 
-        for i in 0..size - shift {
+        let s = if size >= shift { size - shift } else { 0 };
+
+        for i in 0..s {
             v[i] = v[i + shift];
         }
-        for i in size - shift..size {
+
+        for i in s..size {
             v[i] = false;
         }
 
@@ -251,6 +261,9 @@ fn test_bitset_shr() {
     do_test(6400, 640);
     do_test(6400, 114);
     do_test(6400, 514);
+    do_test(63, 65);
+    do_test(6400, 6400);
+    do_test(6400, 16400);
 }
 
 #[cfg(test)]
