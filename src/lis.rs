@@ -49,7 +49,7 @@ impl<T: Ord> Ord for Inf<T> {
 fn lis<T: Ord>(seq: &[T]) -> usize {
     let mut dp: Vec<Inf<&T>> = vec![Inf::Inf; seq.len() + 1];
 
-    for ref x in seq.iter() {
+    for x in seq.iter() {
         let i = dp.lower_bound(&Inf::Val(x));
         dp[i] = Inf::Val(x);
     }

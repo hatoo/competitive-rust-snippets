@@ -18,7 +18,7 @@ impl BIT {
         let mut s = 0;
         while i > 0 {
             s += self.buf[i];
-            i = i & (i - 1);
+            i &= i - 1;
         }
         s
     }

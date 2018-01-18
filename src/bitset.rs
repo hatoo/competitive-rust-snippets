@@ -1,9 +1,9 @@
 use std;
 
 #[snippet = "BitSet"]
-const TRUE: &'static bool = &true;
+const TRUE: &bool = &true;
 #[snippet = "BitSet"]
-const FALSE: &'static bool = &false;
+const FALSE: &bool = &false;
 
 #[derive(Clone, Debug)]
 #[snippet = "BitSet"]
@@ -64,7 +64,7 @@ impl std::ops::ShlAssign<usize> for BitSet {
         let r = x & 63;
 
         if q > self.buf.len() {
-            for x in self.buf.iter_mut() {
+            for x in &mut self.buf {
                 *x = 0;
             }
             return;
@@ -105,7 +105,7 @@ impl std::ops::ShrAssign<usize> for BitSet {
         let r = x & 63;
 
         if q >= self.buf.len() {
-            for x in self.buf.iter_mut() {
+            for x in &mut self.buf {
                 *x = 0;
             }
             return;

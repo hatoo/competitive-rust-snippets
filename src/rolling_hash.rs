@@ -8,7 +8,7 @@ struct RollingHash {
 #[allow(dead_code)]
 impl RollingHash {
     fn new(s: &[u64]) -> RollingHash {
-        RollingHash::with_base_mod_pairs(s, &[(1009, 1000000007), (9973, 999999937)])
+        RollingHash::with_base_mod_pairs(s, &[(1009, 1_000_000_007), (9973, 999_999_937)])
     }
 
     fn with_base_mod_pairs(s: &[u64], base_mod_pairs: &[(u64, u64)]) -> RollingHash {

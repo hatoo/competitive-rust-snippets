@@ -68,7 +68,8 @@ impl<T: Clone, F: Fn(&T, &T) -> T> SEG<T, F> {
 
     #[allow(dead_code)]
     fn query(&self, a: usize, b: usize) -> T {
-        self.q(a, b, 0, 0, self.n).unwrap_or(self.zero.clone())
+        self.q(a, b, 0, 0, self.n)
+            .unwrap_or_else(|| self.zero.clone())
     }
 }
 

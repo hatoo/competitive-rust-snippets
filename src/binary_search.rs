@@ -20,10 +20,7 @@ impl<T: Ord> BinarySearch<T> for [T] {
                 Ordering::Less => {
                     low = mid + 1;
                 }
-                Ordering::Equal => {
-                    high = mid;
-                }
-                Ordering::Greater => {
+                Ordering::Equal | Ordering::Greater => {
                     high = mid;
                 }
             }
@@ -38,10 +35,7 @@ impl<T: Ord> BinarySearch<T> for [T] {
         while low != high {
             let mid = (low + high) / 2;
             match self[mid].cmp(x) {
-                Ordering::Less => {
-                    low = mid + 1;
-                }
-                Ordering::Equal => {
+                Ordering::Less | Ordering::Equal => {
                     low = mid + 1;
                 }
                 Ordering::Greater => {

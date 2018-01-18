@@ -23,7 +23,7 @@ impl<T: Clone, F: Fn(&mut T, &T) -> ()> BIT<T, F> {
         let mut s = self.zero.clone();
         while i > 0 {
             (self.f)(&mut s, &self.buf[i]);
-            i = i & (i - 1);
+            i &= i - 1;
         }
         s
     }

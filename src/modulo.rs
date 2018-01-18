@@ -36,7 +36,7 @@ fn mod_pow(x: u64, n: u64, m: u64) -> u64 {
             res = (res * x) % m;
         }
         x = (x * x) % m;
-        n = n >> 1;
+        n >>= 1;
     }
     res
 }
@@ -59,23 +59,23 @@ fn fact_table(len: usize, m: u64) -> Vec<u64> {
 
 // (a mod p, e when n! = a p^e)
 #[allow(dead_code)]
-fn mod_fact(n: u64, p: u64, fact: &Vec<u64>) -> (u64, u64) {
+fn mod_fact(n: u64, p: u64, fact: &[u64]) -> (u64, u64) {
     if n == 0 {
         (1, 0)
     } else {
         let (a, b) = mod_fact(n / p, p, fact);
-        let e = b + n / p;
+        let pow = b + n / p;
 
         if n / p % 2 != 0 {
-            (a * (p - fact[(n % p) as usize]) % p, e)
+            (a * (p - fact[(n % p) as usize]) % p, pow)
         } else {
-            (a * fact[(n % p) as usize] % p, e)
+            (a * fact[(n % p) as usize] % p, pow)
         }
     }
 }
 
 #[allow(dead_code)]
-fn mod_comb(n: u64, k: u64, p: u64, fact: &Vec<u64>) -> u64 {
+fn mod_comb(n: u64, k: u64, p: u64, fact: &[u64]) -> u64 {
     if n < k {
         0
     } else {
@@ -92,7 +92,7 @@ fn mod_comb(n: u64, k: u64, p: u64, fact: &Vec<u64>) -> u64 {
 }
 
 #[allow(dead_code)]
-fn mod_comb_repetition(n: u64, k: u64, p: u64, fact: &Vec<u64>) -> u64 {
+fn mod_comb_repetition(n: u64, k: u64, p: u64, fact: &[u64]) -> u64 {
     mod_comb(n - 1 + k, n - 1, p, fact)
 }
 
