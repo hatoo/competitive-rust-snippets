@@ -10,6 +10,7 @@ mod rev;
 mod total;
 mod modulo;
 mod segtree;
+mod seg_lazy;
 mod bit_simple;
 mod bit;
 mod uft;
