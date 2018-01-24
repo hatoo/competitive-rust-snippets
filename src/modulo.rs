@@ -1,5 +1,4 @@
-#![snippet = "mod"]
-
+#[snippet = "mod"]
 #[allow(dead_code)]
 fn gcd(a: u64, b: u64) -> u64 {
     if b == 0 {
@@ -10,13 +9,15 @@ fn gcd(a: u64, b: u64) -> u64 {
 }
 
 
+#[snippet = "mod"]
 #[allow(dead_code)]
 fn lcm(a: u64, b: u64) -> u64 {
     a / gcd(a, b) * b
 }
 
-// (gcd, x, y)
+#[snippet = "mod"]
 #[allow(dead_code)]
+/// (gcd, x, y)
 fn extgcd(a: i64, b: i64) -> (i64, i64, i64) {
     if b == 0 {
         (a, 1, 0)
@@ -26,6 +27,7 @@ fn extgcd(a: i64, b: i64) -> (i64, i64, i64) {
     }
 }
 
+#[snippet = "mod"]
 #[allow(dead_code)]
 fn mod_pow(x: u64, n: u64, m: u64) -> u64 {
     let mut res = 1;
@@ -41,12 +43,14 @@ fn mod_pow(x: u64, n: u64, m: u64) -> u64 {
     res
 }
 
+#[snippet = "mod"]
 #[allow(dead_code)]
 fn mod_inverse(a: u64, m: u64) -> u64 {
     let (_, x, _) = extgcd(a as i64, m as i64);
     ((m as i64 + x) as u64 % m) % m
 }
 
+#[snippet = "mod"]
 #[allow(dead_code)]
 fn fact_table(len: usize, m: u64) -> Vec<u64> {
     let mut res = vec![1; len + 1];
@@ -57,8 +61,9 @@ fn fact_table(len: usize, m: u64) -> Vec<u64> {
 }
 
 
-// (a mod p, e when n! = a p^e)
+#[snippet = "mod"]
 #[allow(dead_code)]
+/// (a mod p, e when n! = a p^e)
 fn mod_fact(n: u64, p: u64, fact: &[u64]) -> (u64, u64) {
     if n == 0 {
         (1, 0)
@@ -74,6 +79,7 @@ fn mod_fact(n: u64, p: u64, fact: &[u64]) -> (u64, u64) {
     }
 }
 
+#[snippet = "mod"]
 #[allow(dead_code)]
 fn mod_comb(n: u64, k: u64, p: u64, fact: &[u64]) -> u64 {
     if n < k {
@@ -91,6 +97,7 @@ fn mod_comb(n: u64, k: u64, p: u64, fact: &[u64]) -> u64 {
     }
 }
 
+#[snippet = "mod"]
 #[allow(dead_code)]
 fn mod_comb_repetition(n: u64, k: u64, p: u64, fact: &[u64]) -> u64 {
     mod_comb(n - 1 + k, n - 1, p, fact)
