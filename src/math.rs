@@ -1,5 +1,6 @@
 #[snippet = "partition_dp"]
 #[allow(dead_code)]
+/// dp[i][j] = j th partition number of i
 fn partition_dp(n: usize, m: usize, p: u64) -> Vec<Vec<u64>> {
     let mut dp = vec![vec![0; m + 1]; n + 1];
     for i in 0..m + 1 {
