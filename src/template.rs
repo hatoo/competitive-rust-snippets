@@ -45,6 +45,13 @@ mod util {
             .map(|t| t.parse().unwrap())
             .collect()
     }
+
+    #[allow(dead_code)]
+    pub fn with_bufwriter<F: FnOnce(std::io::BufWriter<std::io::StdoutLock>) -> ()>(f: F) {
+        let out = std::io::stdout();
+        let writer = std::io::BufWriter::new(out.lock());
+        f(writer)
+    }
 }
 
 #[allow(unused_macros)]
