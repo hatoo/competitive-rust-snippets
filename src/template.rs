@@ -23,7 +23,7 @@ use std::iter::FromIterator;
 use std::io::{stdin, stdout, BufWriter, Write};
 
 mod util {
-    use std::io::stdin;
+    use std::io::{stdin, stdout, BufWriter, StdoutLock};
     use std::str::FromStr;
     use std::fmt::Debug;
 
@@ -47,9 +47,9 @@ mod util {
     }
 
     #[allow(dead_code)]
-    pub fn with_bufwriter<F: FnOnce(std::io::BufWriter<std::io::StdoutLock>) -> ()>(f: F) {
-        let out = std::io::stdout();
-        let writer = std::io::BufWriter::new(out.lock());
+    pub fn with_bufwriter<F: FnOnce(BufWriter<StdoutLock>) -> ()>(f: F) {
+        let out = stdout();
+        let writer = BufWriter::new(out.lock());
         f(writer)
     }
 }
