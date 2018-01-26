@@ -24,3 +24,4 @@ mod util;
 mod lis;
 mod bitset;
 mod math;
+mod template;

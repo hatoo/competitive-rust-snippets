@@ -101,4 +101,5 @@ macro_rules! debug {
       }
   }
 
+#[allow(dead_code)]
 fn main() {}
