@@ -198,3 +198,32 @@ fn test_flow() {
 
     assert_eq!(flow.max_flow_dinic(s, t), 11);
 }
+
+#[test]
+fn test_bipartite_matching() {
+    use rand::{Rng, SeedableRng, StdRng};
+    // Create bipartite graph
+    let size = 100;
+    let s = 2 * size + 1;
+    let t = s + 1;
+    let mut flow = Flow::new(2 * size + 2);
+    let mut g = vec![Vec::new(); 2 * size];
+
+    for i in 0..size {
+        flow.add_edge(s, i, 1);
+        flow.add_edge(size + i, t, 1);
+    }
+
+    let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
+    for _ in 0..size * size / 4 {
+        let u = rng.next_u32() as usize % size;
+        let v = size + rng.next_u32() as usize % size;
+
+        if g[u].iter().all(|&x| x != v) {
+            g[u].push(v);
+            flow.add_edge(u, v, 1);
+        }
+    }
+
+    assert_eq!(bipartite_matching(&g), flow.max_flow_dinic(s, t));
+}
