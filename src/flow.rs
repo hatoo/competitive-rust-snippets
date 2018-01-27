@@ -155,6 +155,35 @@ impl Flow {
     }
 }
 
+#[snippet = "bipartite_matching"]
+#[allow(dead_code)]
+pub fn bipartite_matching(g: &[Vec<usize>]) -> usize {
+    fn dfs(v: usize, g: &[Vec<usize>], mat: &mut [Option<usize>], used: &mut [bool]) -> bool {
+        used[v] = true;
+        for &u in &g[v] {
+            if mat[u].is_none() || !used[mat[u].unwrap()] && dfs(mat[u].unwrap(), g, mat, used) {
+                mat[v] = Some(u);
+                mat[u] = Some(v);
+                return true;
+            }
+        }
+
+        false
+    }
+
+    let mut res = 0;
+    let mut mat = vec![None; g.len()];
+    for v in 0..g.len() {
+        if mat[v].is_none() {
+            let mut used = vec![false; g.len()];
+            if dfs(v, g, &mut mat, &mut used) {
+                res += 1;
+            }
+        }
+    }
+    res
+}
+
 #[test]
 fn test_flow() {
     let mut flow = Flow::new(10);
@@ -170,4 +199,33 @@ fn test_flow() {
     flow.add_edge(3, t, 8);
 
     assert_eq!(flow.max_flow_dinic(s, t), 11);
+}
+
+#[test]
+fn test_bipartite_matching() {
+    use rand::{Rng, SeedableRng, StdRng};
+    // Create bipartite graph
+    let size = 100;
+    let s = 2 * size + 1;
+    let t = s + 1;
+    let mut flow = Flow::new(2 * size + 2);
+    let mut g = vec![Vec::new(); 2 * size];
+
+    for i in 0..size {
+        flow.add_edge(s, i, 1);
+        flow.add_edge(size + i, t, 1);
+    }
+
+    let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
+    for _ in 0..size * size / 4 {
+        let u = rng.next_u32() as usize % size;
+        let v = size + rng.next_u32() as usize % size;
+
+        if g[u].iter().all(|&x| x != v) {
+            g[u].push(v);
+            flow.add_edge(u, v, 1);
+        }
+    }
+
+    assert_eq!(bipartite_matching(&g), flow.max_flow_dinic(s, t));
 }
