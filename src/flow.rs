@@ -153,6 +153,36 @@ impl Flow {
     }
 }
 
+#[snippet = "bipartite_matching"]
+pub mod bipartite_matching {
+    fn dfs(v: usize, g: &[Vec<usize>], mat: &mut [Option<usize>], used: &mut [bool]) -> bool {
+        used[v] = true;
+        for &u in &g[v] {
+            if mat[u].is_none() || !used[mat[u].unwrap()] && dfs(mat[u].unwrap(), g, mat, used) {
+                mat[v] = Some(u);
+                mat[u] = Some(v);
+                return true;
+            }
+        }
+
+        false
+    }
+
+    pub fn bipartite_matching(g: &[Vec<usize>]) -> usize {
+        let mut res = 0;
+        let mut mat = vec![None; g.len()];
+        for v in 0..g.len() {
+            if mat[v].is_none() {
+                let mut used = vec![false; g.len()];
+                if dfs(v, g, &mut mat, &mut used) {
+                    res += 1;
+                }
+            }
+        }
+        res
+    }
+}
+
 #[test]
 fn test_flow() {
     let mut flow = Flow::new(10);
