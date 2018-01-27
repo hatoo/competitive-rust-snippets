@@ -1,6 +1,7 @@
 #[snippet = "UFT"]
 #[allow(dead_code)]
-struct UFT {
+/// Union Find Tree
+pub struct UFT {
     pub par: Vec<usize>,
     pub rank: Vec<usize>,
 }
@@ -8,7 +9,7 @@ struct UFT {
 #[snippet = "UFT"]
 impl UFT {
     #[allow(dead_code)]
-    fn new(n: usize) -> Self {
+    pub fn new(n: usize) -> Self {
         UFT {
             par: (0..n).collect(),
             rank: vec![0; n],
@@ -16,7 +17,7 @@ impl UFT {
     }
 
     #[allow(dead_code)]
-    fn find(&mut self, x: usize) -> usize {
+    pub fn find(&mut self, x: usize) -> usize {
         if self.par[x] == x {
             x
         } else {
@@ -28,7 +29,7 @@ impl UFT {
     }
 
     #[allow(dead_code)]
-    fn unite(&mut self, x: usize, y: usize) {
+    pub fn unite(&mut self, x: usize, y: usize) {
         let x = self.find(x);
         let y = self.find(y);
         if x == y {

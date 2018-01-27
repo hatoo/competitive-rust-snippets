@@ -1,17 +1,18 @@
 #[snippet = "RollingHash"]
 #[allow(dead_code)]
-struct RollingHash {
+/// Rolling hash algorithm
+pub struct RollingHash {
     hash_pow_list: Vec<(u64, Vec<(u64, u64)>)>,
 }
 
 #[snippet = "RollingHash"]
 #[allow(dead_code)]
 impl RollingHash {
-    fn new(s: &[u64]) -> RollingHash {
+    pub fn new(s: &[u64]) -> RollingHash {
         RollingHash::with_base_mod_pairs(s, &[(1009, 1_000_000_007), (9973, 999_999_937)])
     }
 
-    fn with_base_mod_pairs(s: &[u64], base_mod_pairs: &[(u64, u64)]) -> RollingHash {
+    pub fn with_base_mod_pairs(s: &[u64], base_mod_pairs: &[(u64, u64)]) -> RollingHash {
         let hp_list = base_mod_pairs
             .iter()
             .map(|&(base, m)| {
@@ -32,14 +33,14 @@ impl RollingHash {
     }
 
     // [l, r)
-    fn get(&self, l: usize, r: usize) -> u64 {
+    pub fn get(&self, l: usize, r: usize) -> u64 {
         self.hash_pow_list
             .iter()
             .map(|&(m, ref hp)| (hp[r].0 + m - hp[l].0 * hp[r - l].1 % m) % m)
             .fold(0, |a, b| a ^ b)
     }
 
-    fn len(&self) -> usize {
+    pub fn len(&self) -> usize {
         self.hash_pow_list
             .first()
             .map(|v| v.1.len() - 1)

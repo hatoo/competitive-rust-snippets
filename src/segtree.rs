@@ -1,6 +1,7 @@
 #[snippet = "SEG"]
 #[allow(dead_code)]
-struct SEG<T: Clone, F: Fn(&T, &T) -> T> {
+/// Segment Tree
+pub struct SEG<T: Clone, F: Fn(&T, &T) -> T> {
     n: usize,
     buf: Vec<T>,
     reducer: F,
@@ -10,7 +11,7 @@ struct SEG<T: Clone, F: Fn(&T, &T) -> T> {
 #[snippet = "SEG"]
 impl<T: Clone, F: Fn(&T, &T) -> T> SEG<T, F> {
     #[allow(dead_code)]
-    fn new(n: usize, zero: &T, f: F) -> SEG<T, F> {
+    pub fn new(n: usize, zero: &T, f: F) -> SEG<T, F> {
         let n = (1..)
             .map(|i| 2usize.pow(i as u32))
             .find(|&x| x > n)
@@ -24,7 +25,7 @@ impl<T: Clone, F: Fn(&T, &T) -> T> SEG<T, F> {
     }
 
     #[allow(dead_code)]
-    fn update(&mut self, k: usize, a: T) {
+    pub fn update(&mut self, k: usize, a: T) {
         let mut k = k + self.n - 1;
         self.buf[k] = a;
 
@@ -35,7 +36,7 @@ impl<T: Clone, F: Fn(&T, &T) -> T> SEG<T, F> {
     }
 
     #[allow(dead_code)]
-    fn add(&mut self, k: usize, a: &T) {
+    pub fn add(&mut self, k: usize, a: &T) {
         let mut k = k + self.n - 1;
         self.buf[k] = (self.reducer)(&self.buf[k], a);
 
@@ -67,12 +68,11 @@ impl<T: Clone, F: Fn(&T, &T) -> T> SEG<T, F> {
     }
 
     #[allow(dead_code)]
-    fn query(&self, a: usize, b: usize) -> T {
+    pub fn query(&self, a: usize, b: usize) -> T {
         self.q(a, b, 0, 0, self.n)
             .unwrap_or_else(|| self.zero.clone())
     }
 }
-
 
 #[test]
 fn test_segtree_vs_cumulative_sum() {

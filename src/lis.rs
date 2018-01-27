@@ -46,7 +46,8 @@ impl<T: Ord> Ord for Inf<T> {
 
 #[snippet = "lis"]
 #[allow(dead_code)]
-fn lis<T: Ord>(seq: &[T]) -> usize {
+/// Calculate length of Longest Increasing Subsequence. O(N log N)
+pub fn lis<T: Ord>(seq: &[T]) -> usize {
     let mut dp: Vec<Inf<&T>> = vec![Inf::Inf; seq.len() + 1];
 
     for x in seq.iter() {

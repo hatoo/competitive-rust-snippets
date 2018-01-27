@@ -1,11 +1,12 @@
-// Same of std::cmp::Reverse.
-// It is useful since Atcoder's rustc is 1.15 which is not support std::cmp::Reverse.
+/// Same of std::cmp::Reverse.
+/// It is useful since Atcoder's rustc is 1.15 which is not support std::cmp::Reverse.
 
 use std::cmp::Ordering;
 
 #[snippet = "Rev"]
 #[derive(Eq, PartialEq, Clone, Debug)]
-struct Rev<T>(pub T);
+/// Equivalent to std::cmp::Reverse
+pub struct Rev<T>(pub T);
 
 #[snippet = "Rev"]
 impl<T: PartialOrd> PartialOrd for Rev<T> {

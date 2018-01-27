@@ -3,7 +3,7 @@ use std;
 // Too complicated
 
 #[snippet = "Bucket"]
-struct Bucket<I: BucketImpl> {
+pub struct Bucket<I: BucketImpl> {
     buf: Vec<I::Elem>,
     parent: Vec<I::Parent>,
     sqrt: usize,
@@ -16,7 +16,7 @@ where
     I::Parent: Clone,
 {
     #[allow(dead_code)]
-    fn new(init_elem: Vec<I::Elem>, init_parent: I::Parent) -> Self {
+    pub fn new(init_elem: Vec<I::Elem>, init_parent: I::Parent) -> Self {
         let sqrt = (1..).find(|x| x * x >= init_elem.len()).unwrap();
         let mut parent = vec![init_parent; sqrt];
 
@@ -34,7 +34,7 @@ where
 
     // (left cut, middle, right_cut)
     #[allow(dead_code)]
-    fn ranges(
+    pub fn ranges(
         &self,
         l: usize,
         r: usize,
@@ -59,7 +59,7 @@ where
     }
 
     #[allow(dead_code)]
-    fn add(&mut self, l: usize, r: usize, delta: &I::A) {
+    pub fn add(&mut self, l: usize, r: usize, delta: &I::A) {
         let (left, mid, right) = self.ranges(l, r);
 
         for i in left.chain(right) {
@@ -73,13 +73,11 @@ where
     }
 
     #[allow(dead_code)]
-    fn sum(&mut self, l: usize, r: usize) -> Option<I::R> {
+    pub fn sum(&mut self, l: usize, r: usize) -> Option<I::R> {
         let (left, mid, right) = self.ranges(l, r);
 
         let mut iter = left.chain(right)
-            .map(|i| {
-                I::elem_to_result(&self.buf[i], &self.parent[i / self.sqrt])
-            })
+            .map(|i| I::elem_to_result(&self.buf[i], &self.parent[i / self.sqrt]))
             .chain(mid.map(|i| I::parent_to_result(&self.parent[i])));
 
         if let Some(mut r) = iter.next() {
@@ -94,7 +92,7 @@ where
 }
 
 #[snippet = "Bucket"]
-trait BucketImpl {
+pub trait BucketImpl {
     type Elem;
     type Parent;
     type A;
@@ -109,7 +107,6 @@ trait BucketImpl {
     fn elem_to_result(&Self::Elem, p: &Self::Parent) -> Self::R;
     fn reduce_result(&mut Self::R, &Self::R);
 }
-
 
 #[snippet = "Bucket-RangeAddQueryMax"]
 #[allow(dead_code)]

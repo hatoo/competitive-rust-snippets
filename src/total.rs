@@ -1,11 +1,10 @@
-// Implement Eq and Ord for a type which has only PartialEq and PartialOrd.
-// It is useful when sorting a Vec of f64
-
 use std::cmp::Ordering;
 
 #[snippet = "Total"]
 #[derive(PartialEq, PartialOrd)]
-struct Total<T>(pub T);
+/// Implement Eq and Ord for a type which has only PartialEq and PartialOrd.
+/// It is useful when sorting a Vec of f64
+pub struct Total<T>(pub T);
 
 #[snippet = "Total"]
 impl<T: PartialEq> Eq for Total<T> {}

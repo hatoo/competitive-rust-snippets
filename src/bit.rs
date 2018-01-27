@@ -1,6 +1,7 @@
 #[snippet = "BIT"]
 #[allow(dead_code)]
-struct BIT<T: Clone, F: Fn(&mut T, &T) -> ()> {
+/// Generic Binary Indexed Tree
+pub struct BIT<T: Clone, F: Fn(&mut T, &T) -> ()> {
     buf: Vec<T>,
     zero: T,
     f: F,
@@ -9,7 +10,7 @@ struct BIT<T: Clone, F: Fn(&mut T, &T) -> ()> {
 #[snippet = "BIT"]
 impl<T: Clone, F: Fn(&mut T, &T) -> ()> BIT<T, F> {
     #[allow(dead_code)]
-    fn new(n: usize, zero: &T, f: F) -> BIT<T, F> {
+    pub fn new(n: usize, zero: &T, f: F) -> BIT<T, F> {
         BIT {
             buf: vec![zero.clone(); n + 1],
             zero: zero.clone(),
@@ -18,7 +19,7 @@ impl<T: Clone, F: Fn(&mut T, &T) -> ()> BIT<T, F> {
     }
 
     #[allow(dead_code)]
-    fn sum(&self, i: usize) -> T {
+    pub fn sum(&self, i: usize) -> T {
         let mut i = i;
         let mut s = self.zero.clone();
         while i > 0 {
@@ -29,7 +30,7 @@ impl<T: Clone, F: Fn(&mut T, &T) -> ()> BIT<T, F> {
     }
 
     #[allow(dead_code)]
-    fn add(&mut self, i: usize, x: &T) {
+    pub fn add(&mut self, i: usize, x: &T) {
         let mut i = i as i64;
         while i < self.buf.len() as i64 {
             let t = &mut self.buf[i as usize];

@@ -1,3 +1,6 @@
+//! Utilitys for testing.
+//! This module doesn't contains snippet.
+
 use rand::Rng;
 use std::ops::Range;
 use std::cmp::{max, min};

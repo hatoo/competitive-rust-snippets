@@ -3,22 +3,23 @@ use std::cmp::min;
 
 #[snippet = "Flow"]
 #[allow(dead_code)]
-struct Flow {
-    // to, capacity, rev
+/// Struct for maximum flow problem
+pub struct Flow {
+    /// to, capacity, rev
     edges: Vec<Vec<(usize, usize, usize)>>,
 }
 
 #[snippet = "Flow"]
 impl Flow {
     #[allow(dead_code)]
-    fn new(max_size: usize) -> Flow {
+    pub fn new(max_size: usize) -> Flow {
         Flow {
             edges: vec![Vec::new(); max_size + 1],
         }
     }
 
     #[allow(dead_code)]
-    fn add_edge(&mut self, from: usize, to: usize, cap: usize) {
+    pub fn add_edge(&mut self, from: usize, to: usize, cap: usize) {
         let from_rev = self.edges[to].len();
         let to_rev = self.edges[from].len();
 
@@ -27,7 +28,8 @@ impl Flow {
     }
 
     #[allow(dead_code)]
-    fn max_flow_dinic(&mut self, s: usize, t: usize) -> usize {
+    /// Calculate maximum flow by dinic's algorithm
+    pub fn max_flow_dinic(&mut self, s: usize, t: usize) -> usize {
         let mut flow = 0;
         loop {
             let level = self.bfs_dinic(s);

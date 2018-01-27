@@ -1,19 +1,20 @@
 #[snippet = "BIT-usize"]
 #[allow(dead_code)]
-struct BIT {
+/// Binary Indexed Tree of usize
+pub struct BIT {
     buf: Vec<usize>,
 }
 
 #[snippet = "BIT-usize"]
 #[allow(dead_code)]
 impl BIT {
-    fn new(n: usize) -> BIT {
+    pub fn new(n: usize) -> BIT {
         BIT {
             buf: vec![0; n + 1],
         }
     }
 
-    fn sum(&self, i: usize) -> usize {
+    pub fn sum(&self, i: usize) -> usize {
         let mut i = i;
         let mut s = 0;
         while i > 0 {
@@ -23,7 +24,7 @@ impl BIT {
         s
     }
 
-    fn add(&mut self, i: usize, x: usize) {
+    pub fn add(&mut self, i: usize, x: usize) {
         let mut i = i as i64;
         while i < self.buf.len() as i64 {
             self.buf[i as usize] += x;

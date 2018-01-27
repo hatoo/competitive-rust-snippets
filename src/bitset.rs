@@ -7,7 +7,8 @@ const FALSE: &bool = &false;
 
 #[derive(Clone, Debug)]
 #[snippet = "BitSet"]
-struct BitSet {
+/// Efficient bool collection
+pub struct BitSet {
     buf: Vec<u64>,
     size: usize,
 }
@@ -15,7 +16,7 @@ struct BitSet {
 #[snippet = "BitSet"]
 impl BitSet {
     #[allow(dead_code)]
-    fn new(size: usize) -> BitSet {
+    pub fn new(size: usize) -> BitSet {
         BitSet {
             buf: vec![0; (size + 63) / 64],
             size: size,
@@ -23,7 +24,7 @@ impl BitSet {
     }
 
     #[allow(dead_code)]
-    fn set(&mut self, i: usize, b: bool) {
+    pub fn set(&mut self, i: usize, b: bool) {
         assert!(i < self.size);
         if b {
             self.buf[i >> 6] |= 1 << (i & 63);
@@ -33,7 +34,7 @@ impl BitSet {
     }
 
     #[allow(dead_code)]
-    fn count_ones(&self) -> u32 {
+    pub fn count_ones(&self) -> u32 {
         self.buf.iter().map(|x| x.count_ones()).sum()
     }
 

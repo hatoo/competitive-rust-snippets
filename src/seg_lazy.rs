@@ -2,7 +2,8 @@ use std;
 
 #[snippet = "SEG_LAZY"]
 #[allow(dead_code)]
-struct SEG<T: SEGimpl> {
+/// Lazy Segment Tree
+pub struct SEG<T: SEGimpl> {
     n: usize,
     buf: Vec<T::Elem>,
     phantom: std::marker::PhantomData<T>,
@@ -11,7 +12,7 @@ struct SEG<T: SEGimpl> {
 #[snippet = "SEG_LAZY"]
 impl<T: SEGimpl> SEG<T> {
     #[allow(dead_code)]
-    fn new(n: usize, init: T::Elem) -> SEG<T> {
+    pub fn new(n: usize, init: T::Elem) -> SEG<T> {
         let n = (1..).map(|i| 1 << i).find(|&x| x >= n).unwrap();
         SEG {
             n: n,
@@ -51,7 +52,7 @@ impl<T: SEGimpl> SEG<T> {
     }
 
     #[allow(dead_code)]
-    fn range_add(&mut self, x: &T::A, a: usize, b: usize) {
+    pub fn range_add(&mut self, x: &T::A, a: usize, b: usize) {
         let n = self.n;
         self.r(x, a, b, 0, 0, n);
     }
@@ -76,14 +77,14 @@ impl<T: SEGimpl> SEG<T> {
         }
     }
     #[allow(dead_code)]
-    fn query(&mut self, a: usize, b: usize) -> Option<T::R> {
+    pub fn query(&mut self, a: usize, b: usize) -> Option<T::R> {
         let n = self.n;
         self.q(a, b, 0, 0, n)
     }
 }
 
 #[snippet = "SEG_LAZY"]
-trait SEGimpl {
+pub trait SEGimpl {
     type Elem: Clone;
     type A;
     type R;

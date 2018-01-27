@@ -1,13 +1,14 @@
 #[snippet = "Manacher"]
 #[allow(dead_code)]
-struct Manacher {
+/// Manacher's algorithm
+pub struct Manacher {
     r: Vec<usize>,
 }
 
 #[snippet = "Manacher"]
 impl Manacher {
     #[allow(dead_code)]
-    fn new<T: Eq>(seq: &[T]) -> Manacher {
+    pub fn new<T: Eq>(seq: &[T]) -> Manacher {
         let mut r = vec![0; 2 * seq.len() - 1];
         let mut i = 0;
         let mut j = 0;
@@ -28,9 +29,9 @@ impl Manacher {
         Manacher { r: r }
     }
 
-    // [l,r]
+    /// [l,r]
     #[allow(dead_code)]
-    fn is_palindrome(&self, l: usize, r: usize) -> bool {
+    pub fn is_palindrome(&self, l: usize, r: usize) -> bool {
         self.r[l + r] >= r - l + 1
     }
 
