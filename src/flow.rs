@@ -154,7 +154,8 @@ impl Flow {
 }
 
 #[snippet = "bipartite_matching"]
-pub mod bipartite_matching {
+#[allow(dead_code)]
+pub fn bipartite_matching(g: &[Vec<usize>]) -> usize {
     fn dfs(v: usize, g: &[Vec<usize>], mat: &mut [Option<usize>], used: &mut [bool]) -> bool {
         used[v] = true;
         for &u in &g[v] {
@@ -168,19 +169,17 @@ pub mod bipartite_matching {
         false
     }
 
-    pub fn bipartite_matching(g: &[Vec<usize>]) -> usize {
-        let mut res = 0;
-        let mut mat = vec![None; g.len()];
-        for v in 0..g.len() {
-            if mat[v].is_none() {
-                let mut used = vec![false; g.len()];
-                if dfs(v, g, &mut mat, &mut used) {
-                    res += 1;
-                }
+    let mut res = 0;
+    let mut mat = vec![None; g.len()];
+    for v in 0..g.len() {
+        if mat[v].is_none() {
+            let mut used = vec![false; g.len()];
+            if dfs(v, g, &mut mat, &mut used) {
+                res += 1;
             }
         }
-        res
     }
+    res
 }
 
 #[test]
