@@ -12,12 +12,8 @@ pub struct SEG<T: Clone, F: Fn(&T, &T) -> T> {
 impl<T: Clone, F: Fn(&T, &T) -> T> SEG<T, F> {
     #[allow(dead_code)]
     pub fn new(n: usize, zero: &T, f: F) -> SEG<T, F> {
-        let n = (1..)
-            .map(|i| 2usize.pow(i as u32))
-            .find(|&x| x > n)
-            .unwrap();
         SEG {
-            n: n,
+            n,
             buf: vec![zero.clone(); 2 * n],
             reducer: f,
             zero: zero.clone(),
@@ -26,51 +22,55 @@ impl<T: Clone, F: Fn(&T, &T) -> T> SEG<T, F> {
 
     #[allow(dead_code)]
     pub fn update(&mut self, k: usize, a: T) {
-        let mut k = k + self.n - 1;
+        let mut k = k + self.n;
         self.buf[k] = a;
 
         while k > 0 {
-            k = (k - 1) / 2;
-            self.buf[k] = (self.reducer)(&self.buf[k * 2 + 1], &self.buf[k * 2 + 2]);
+            k >>= 1;
+            self.buf[k] = (self.reducer)(&self.buf[k << 1], &self.buf[(k << 1) | 1]);
         }
     }
 
     #[allow(dead_code)]
     pub fn add(&mut self, k: usize, a: &T) {
-        let mut k = k + self.n - 1;
+        let mut k = k + self.n;
         self.buf[k] = (self.reducer)(&self.buf[k], a);
 
         while k > 0 {
-            k = (k - 1) / 2;
-            self.buf[k] = (self.reducer)(&self.buf[k * 2 + 1], &self.buf[k * 2 + 2]);
+            k >>= 1;
+            self.buf[k] = (self.reducer)(&self.buf[k << 1], &self.buf[(k << 1) | 1]);
         }
     }
 
     #[allow(dead_code)]
-    fn q(&self, a: usize, b: usize, k: usize, l: usize, r: usize) -> Option<T> {
-        if r <= a || b <= l {
-            return None;
-        }
+    fn query(&self, l: usize, r: usize) -> Option<T> {
+        let combine = |resl, resr| match (resl, resr) {
+            (Some(l), Some(r)) => Some((self.reducer)(&l, &r)),
+            (Some(l), None) => Some(l),
+            (None, Some(r)) => Some(r),
+            _ => None,
+        };
 
-        if a <= l && r <= b {
-            Some(self.buf[k].clone())
-        } else {
-            let vl = self.q(a, b, k * 2 + 1, l, (l + r) / 2);
-            let vr = self.q(a, b, k * 2 + 2, (l + r) / 2, r);
+        let mut vl = None;
+        let mut vr = None;
 
-            match (vl, vr) {
-                (Some(l), Some(r)) => Some((self.reducer)(&l, &r)),
-                (Some(l), None) => Some(l),
-                (None, Some(r)) => Some(r),
-                _ => None,
+        let mut l = l + self.n;
+        let mut r = r + self.n;
+
+        while l < r {
+            if l & 1 == 1 {
+                vl = combine(vl, Some(self.buf[l].clone()));
+                l += 1;
             }
-        }
-    }
+            if r & 1 == 1 {
+                r -= 1;
+                vr = combine(Some(self.buf[r].clone()), vr);
+            }
 
-    #[allow(dead_code)]
-    pub fn query(&self, a: usize, b: usize) -> T {
-        self.q(a, b, 0, 0, self.n)
-            .unwrap_or_else(|| self.zero.clone())
+            l >>= 1;
+            r >>= 1;
+        }
+        combine(vl, vr)
     }
 }
 
@@ -90,19 +90,26 @@ fn test_segtree_vs_cumulative_sum() {
         let x = rng.next_u32() as u64;
         sum += x;
         cum_sum[i + 1] = sum;
-        seg.add(i, &x);
+        if 1 % 2 == 0 {
+            seg.add(i, &x);
+        } else {
+            seg.update(i, x);
+        }
     }
 
     for _ in 0..1000 {
         let r = random_range(&mut rng, 0, size);
-        assert_eq!(seg.query(r.start, r.end), cum_sum[r.end] - cum_sum[r.start]);
+        assert_eq!(
+            seg.query(r.start, r.end).unwrap_or(0),
+            cum_sum[r.end] - cum_sum[r.start]
+        );
     }
 }
 
 #[test]
 fn test_segtree_same_index() {
     let seg = SEG::new(8, &0, |&a, &b| a + b);
-    assert_eq!(seg.query(0, 0), 0);
+    assert_eq!(seg.query(0, 0).unwrap_or(0), 0);
 }
 
 #[cfg(test)]
