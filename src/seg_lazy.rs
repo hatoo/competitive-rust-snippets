@@ -6,17 +6,19 @@ use std;
 pub struct SEG<T: SEGimpl> {
     n: usize,
     buf: Vec<T::Elem>,
+    zero: T::Elem,
     phantom: std::marker::PhantomData<T>,
 }
 
 #[snippet = "SEG_LAZY"]
 impl<T: SEGimpl> SEG<T> {
     #[allow(dead_code)]
-    pub fn new(n: usize, init: T::Elem) -> SEG<T> {
+    pub fn new(n: usize, zero: T::Elem) -> SEG<T> {
         let n = (1..).map(|i| 1 << i).find(|&x| x >= n).unwrap();
         SEG {
-            n: n,
-            buf: vec![init; 2 * n],
+            n,
+            buf: vec![zero.clone(); 2 * n],
+            zero,
             phantom: std::marker::PhantomData,
         }
     }
@@ -72,18 +74,22 @@ impl<T: SEGimpl> SEG<T> {
     }
 
     #[allow(dead_code)]
-    fn q(&mut self, a: usize, b: usize, k: usize, l: usize, r: usize) -> Option<T::R> {
+    fn q(&mut self, a: usize, b: usize, k: usize, l: usize, r: usize) -> Option<T::Elem> {
         self.eval(k, l, r);
         if r <= a || b <= l {
             return None;
         }
         if a <= l && r <= b {
-            Some(T::result(&self.buf[k]))
+            Some(self.buf[k].clone())
         } else {
             let vl = self.q(a, b, k * 2 + 1, l, (l + r) / 2);
             let vr = self.q(a, b, k * 2 + 2, (l + r) / 2, r);
             match (vl, vr) {
-                (Some(l), Some(r)) => Some(T::reduce_result(l, r)),
+                (Some(l), Some(r)) => {
+                    let mut res = self.zero.clone();
+                    T::reduce(&mut res, &l, &r);
+                    Some(res)
+                }
                 (Some(l), None) => Some(l),
                 (None, Some(r)) => Some(r),
                 _ => None,
@@ -93,7 +99,7 @@ impl<T: SEGimpl> SEG<T> {
     #[allow(dead_code)]
     pub fn query(&mut self, a: usize, b: usize) -> Option<T::R> {
         let n = self.n;
-        self.q(a, b, 0, 0, n)
+        self.q(a, b, 0, 0, n).map(T::to_result)
     }
 }
 
@@ -106,8 +112,7 @@ pub trait SEGimpl {
     fn eval(parent: &mut Self::Elem, children: Option<(&mut Self::Elem, &mut Self::Elem)>);
     fn range(x: &Self::A, elem: &mut Self::Elem, l: usize, r: usize);
     fn reduce(parent: &mut Self::Elem, c1: &Self::Elem, c2: &Self::Elem);
-    fn result(elem: &Self::Elem) -> Self::R;
-    fn reduce_result(a: Self::R, b: Self::R) -> Self::R;
+    fn to_result(elem: Self::Elem) -> Self::R;
 }
 
 #[allow(dead_code)]
@@ -129,14 +134,11 @@ impl SEGimpl for RangeAddSum {
     fn range(x: &Self::A, elem: &mut Self::Elem, l: usize, r: usize) {
         elem.1 += (r - l) as u64 * x;
     }
-    fn result(elem: &Self::Elem) -> Self::R {
-        elem.0
-    }
     fn reduce(parent: &mut Self::Elem, c1: &Self::Elem, c2: &Self::Elem) {
         parent.0 = c1.0 + c2.0;
     }
-    fn reduce_result(a: Self::R, b: Self::R) -> Self::R {
-        a + b
+    fn to_result(elem: Self::Elem) -> Self::R {
+        elem.0
     }
 }
 
