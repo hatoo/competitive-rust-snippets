@@ -232,3 +232,63 @@ fn test_seg_lazy_non_commutative() {
         assert_eq!(res.as_ref().map(|a| a.as_slice()).unwrap_or(&[]), &v[r]);
     }
 }
+
+#[cfg(test)]
+use test::Bencher;
+
+#[bench]
+fn bench_lazy_segtree_range_add(b: &mut Bencher) {
+    use util;
+    use rand::{Rng, SeedableRng, StdRng};
+
+    let size = 10000;
+    let mut seg: SEG<RangeAddSum> = SEG::new(size, (0, 0));
+    let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
+
+    for i in 0..size {
+        let x = rng.next_u64() % 256;
+        seg.update(i, (x, 0));
+    }
+
+    let cases = (0..1000)
+        .map(|_| {
+            let x = rng.next_u64() % 256;
+            let r = util::random_range(&mut rng, 0, size);
+            (x, r)
+        })
+        .collect::<Vec<_>>();
+
+    b.iter(|| {
+        for &(x, ref r) in &cases {
+            seg.range_add(&x, r.start, r.end);
+        }
+    });
+}
+
+#[bench]
+fn bench_lazy_segtree_query(b: &mut Bencher) {
+    use util;
+    use rand::{Rng, SeedableRng, StdRng};
+
+    let size = 10000;
+    let mut seg: SEG<RangeAddSum> = SEG::new(size, (0, 0));
+    let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
+
+    for i in 0..size {
+        let x = rng.next_u64() % 256;
+        seg.update(i, (x, 0));
+    }
+
+    let cases = (0..1000)
+        .map(|_| {
+            let r = util::random_range(&mut rng, 0, size);
+            r
+        })
+        .collect::<Vec<_>>();
+
+    b.iter(|| {
+        for r in &cases {
+            seg.query(r.start, r.end);
+        }
+    });
+}
