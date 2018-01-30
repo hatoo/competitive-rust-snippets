@@ -104,3 +104,62 @@ fn test_segtree_same_index() {
     let seg = SEG::new(8, &0, |&a, &b| a + b);
     assert_eq!(seg.query(0, 0), 0);
 }
+
+#[cfg(test)]
+use test::Bencher;
+
+#[bench]
+fn bench_segtree_update(b: &mut Bencher) {
+    use rand::{Rng, SeedableRng, StdRng};
+
+    let size = 10000;
+    let mut seg = SEG::new(size, &0, |&a, &b| a + b);
+    let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
+
+    for i in 0..size {
+        let x = rng.next_u64() % 256;
+        seg.update(i, x);
+    }
+
+    let cases = (0..1000)
+        .map(|_| {
+            let x = rng.next_u64() % 256;
+            let i = rng.next_u32() as usize % size;
+            (x, i)
+        })
+        .collect::<Vec<_>>();
+
+    b.iter(|| {
+        for &(x, i) in &cases {
+            seg.update(i, x);
+        }
+    });
+}
+
+#[bench]
+fn bench_segtree_query(b: &mut Bencher) {
+    use util;
+    use rand::{Rng, SeedableRng, StdRng};
+
+    let size = 10000;
+    let mut seg = SEG::new(size, &0, |&a, &b| a + b);
+    let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
+
+    for i in 0..size {
+        let x = rng.next_u64() % 256;
+        seg.update(i, x);
+    }
+
+    let cases = (0..1000)
+        .map(|_| {
+            let r = util::random_range(&mut rng, 0, size);
+            r
+        })
+        .collect::<Vec<_>>();
+
+    b.iter(|| {
+        for r in &cases {
+            seg.query(r.start, r.end);
+        }
+    });
+}
