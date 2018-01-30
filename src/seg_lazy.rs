@@ -35,7 +35,7 @@ impl<T: SEGimpl> SEG<T> {
     }
 
     #[allow(dead_code)]
-    fn update(&mut self, i: usize, x: T::Elem) {
+    pub fn update(&mut self, i: usize, x: T::Elem) {
         let mut k = i + self.n - 1;
         self.buf[k] = x;
         self.eval(k, i, i + 1);
@@ -49,7 +49,7 @@ impl<T: SEGimpl> SEG<T> {
     }
 
     #[allow(dead_code)]
-    fn get(&mut self, i: usize) -> Option<T::R> {
+    pub fn get(&mut self, i: usize) -> Option<T::R> {
         self.query(i, i + 1)
     }
 
@@ -76,6 +76,11 @@ impl<T: SEGimpl> SEG<T> {
     pub fn range_add(&mut self, x: &T::A, a: usize, b: usize) {
         let n = self.n;
         self.r(x, a, b, 0, 0, n);
+    }
+
+    #[allow(dead_code)]
+    pub fn add(&mut self, x: &T::A, i: usize) {
+        self.range_add(x, i, i + 1);
     }
 
     #[allow(dead_code)]
