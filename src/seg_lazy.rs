@@ -33,6 +33,20 @@ impl<T: SEGimpl> SEG<T> {
     }
 
     #[allow(dead_code)]
+    fn update(&mut self, i: usize, x: T::Elem) {
+        let mut k = i + self.n - 1;
+        self.buf[k] = x;
+        self.eval(k, i, i + 1);
+
+        while k > 0 {
+            k = (k - 1) / 2;
+            let (l, r) = self.buf.split_at_mut(2 * k + 1);
+            let (c1, c2) = r.split_at_mut(1);
+            T::reduce(&mut l[k], &c1[0], &c2[0]);
+        }
+    }
+
+    #[allow(dead_code)]
     fn r(&mut self, x: &T::A, a: usize, b: usize, k: usize, l: usize, r: usize) {
         self.eval(k, l, r);
         if r <= a || b <= l {
@@ -135,6 +149,14 @@ fn test_seg_lazy() {
     let mut v = vec![0; size];
     let mut seg: SEG<RangeAddSum> = SEG::new(size, (0, 0));
     let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
+
+    for i in 0..size {
+        let x = rng.next_u64() % 256;
+        seg.update(i, (x, 0));
+        v[i] = x;
+
+        assert_eq!(seg.query(i, i + 1), Some(v[i]));
+    }
 
     for _ in 0..1000 {
         let x = rng.next_u64() % 256;
