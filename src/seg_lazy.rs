@@ -49,9 +49,8 @@ impl<T: SEGimpl> SEG<T> {
     }
 
     #[allow(dead_code)]
-    fn get(&self, i: usize) -> &T::Elem {
-        let k = i + self.n - 1;
-        &self.buf[k]
+    fn get(&mut self, i: usize) -> Option<T::R> {
+        self.query(i, i + 1)
     }
 
     #[allow(dead_code)]
@@ -163,7 +162,7 @@ fn test_seg_lazy() {
         seg.update(i, (x, 0));
         v[i] = x;
 
-        assert_eq!(seg.get(i), &(v[i], 0));
+        assert_eq!(seg.get(i), Some(v[i]));
     }
 
     for _ in 0..1000 {
