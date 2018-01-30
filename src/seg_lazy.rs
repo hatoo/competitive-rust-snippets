@@ -49,6 +49,12 @@ impl<T: SEGimpl> SEG<T> {
     }
 
     #[allow(dead_code)]
+    fn get(&self, i: usize) -> &T::Elem {
+        let k = i + self.n - 1;
+        &self.buf[k]
+    }
+
+    #[allow(dead_code)]
     fn r(&mut self, x: &T::A, a: usize, b: usize, k: usize, l: usize, r: usize) {
         self.eval(k, l, r);
         if r <= a || b <= l {
@@ -157,7 +163,7 @@ fn test_seg_lazy() {
         seg.update(i, (x, 0));
         v[i] = x;
 
-        assert_eq!(seg.query(i, i + 1), Some(v[i]));
+        assert_eq!(seg.get(i), &(v[i], 0));
     }
 
     for _ in 0..1000 {
