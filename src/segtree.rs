@@ -112,6 +112,34 @@ fn test_segtree_same_index() {
     assert_eq!(seg.query(0, 0).unwrap_or(0), 0);
 }
 
+#[test]
+fn test_segtree_non_commutative() {
+    use util;
+    use rand::{Rng, SeedableRng, StdRng};
+    let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
+
+    let size = 100;
+    let mut seg = SEG::new(size, &Vec::new(), |a, b| {
+        let mut res = Vec::with_capacity(a.len() + b.len());
+        res.extend(a.iter());
+        res.extend(b.iter());
+        res
+    });
+    let mut v = vec![0; size];
+
+    for i in 0..size {
+        let x = rng.next_u64();
+        seg.update(i, vec![x]);
+        v[i] = x;
+    }
+
+    for _ in 0..100 {
+        let r = util::random_range(&mut rng, 0, size);
+        let res = seg.query(r.start, r.end);
+        assert_eq!(res.as_ref().map(|a| a.as_slice()).unwrap_or(&[]), &v[r]);
+    }
+}
+
 #[cfg(test)]
 use test::Bencher;
 
