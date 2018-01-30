@@ -152,6 +152,27 @@ impl SEGimpl for RangeAddSum {
     }
 }
 
+#[allow(dead_code)]
+struct NonCommutative;
+impl SEGimpl for NonCommutative {
+    type Elem = Vec<u64>;
+    type A = u64;
+    type R = Vec<u64>;
+
+    fn eval(_parent: &mut Self::Elem, _children: Option<(&mut Self::Elem, &mut Self::Elem)>) {}
+    fn range(x: &Self::A, elem: &mut Self::Elem, _l: usize, _r: usize) {
+        elem.push(*x);
+    }
+    fn reduce(parent: &mut Self::Elem, c1: &Self::Elem, c2: &Self::Elem) {
+        parent.clear();
+        parent.extend(c1.iter());
+        parent.extend(c2.iter());
+    }
+    fn to_result(elem: Self::Elem) -> Self::R {
+        elem
+    }
+}
+
 #[test]
 fn test_seg_lazy() {
     use util;
@@ -186,5 +207,28 @@ fn test_seg_lazy() {
         }
 
         assert_eq!(seg_sum, sum);
+    }
+}
+
+#[test]
+fn test_seg_lazy_non_commutative() {
+    use util;
+    use rand::{Rng, SeedableRng, StdRng};
+    let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
+
+    let size = 100;
+    let mut seg: SEG<NonCommutative> = SEG::new(size, Vec::new());
+    let mut v = vec![0; size];
+
+    for i in 0..size {
+        let x = rng.next_u64();
+        seg.update(i, vec![x]);
+        v[i] = x;
+    }
+
+    for _ in 0..100 {
+        let r = util::random_range(&mut rng, 0, size);
+        let res = seg.query(r.start, r.end);
+        assert_eq!(res.as_ref().map(|a| a.as_slice()).unwrap_or(&[]), &v[r]);
     }
 }
