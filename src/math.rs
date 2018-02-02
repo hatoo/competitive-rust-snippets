@@ -27,6 +27,24 @@ pub fn convex_hull_check((a1, b1): (i64, i64), (a2, b2): (i64, i64), (a3, b3): (
         >= (b2 as f64 - b1 as f64) * (a3 as f64 - a2 as f64)
 }
 
+#[snippet = "factor_table"]
+#[allow(dead_code)]
+pub fn factor_table(max_n: usize) -> Vec<usize> {
+    let mut res = vec![0; max_n + 1];
+    // res[1] = 1;
+    for i in 2..max_n + 1 {
+        if res[i] == 0 {
+            let mut j = i;
+            while j <= max_n {
+                res[j] = i;
+                j += i;
+            }
+        }
+    }
+
+    res
+}
+
 #[test]
 fn test_partition_dp() {
     const M: u64 = 1000000007;
@@ -34,4 +52,13 @@ fn test_partition_dp() {
 
     assert_eq!(dp[4][3], 4);
     assert_eq!(dp[5][4], 6);
+}
+
+#[test]
+fn test_factor_table() {
+    let n = 1000;
+    let table = factor_table(n);
+    for i in 2..n + 1 {
+        assert_eq!(i % table[i], 0);
+    }
 }
