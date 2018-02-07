@@ -13,7 +13,7 @@ impl<T: Clone, F: Fn(&T, &T) -> T> SEG<T, F> {
     #[allow(dead_code)]
     pub fn new(n: usize, zero: &T, f: F) -> SEG<T, F> {
         SEG {
-            n,
+            n: n,
             buf: vec![zero.clone(); 2 * n],
             reducer: f,
             zero: zero.clone(),

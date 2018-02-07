@@ -16,9 +16,9 @@ impl<T: SEGimpl> SEG<T> {
     pub fn new(n: usize, zero: T::Elem) -> SEG<T> {
         let n = (1..).map(|i| 1 << i).find(|&x| x >= n).unwrap();
         SEG {
-            n,
+            n: n,
             buf: vec![zero.clone(); 2 * n],
-            zero,
+            zero: zero,
             phantom: std::marker::PhantomData,
         }
     }
