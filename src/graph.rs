@@ -50,3 +50,118 @@ pub fn strongly_connected_component(g: &[Vec<usize>]) -> Vec<usize> {
 
     cmp
 }
+
+#[snippet = "LCA"]
+#[allow(dead_code)]
+pub struct LCA {
+    pub depth: Vec<usize>,
+    pub parent: Vec<Vec<Option<usize>>>,
+}
+
+#[snippet = "LCA"]
+#[allow(dead_code)]
+impl LCA {
+    pub fn new(g: &[Vec<usize>]) -> LCA {
+        LCA::with_root(0, g)
+    }
+
+    pub fn with_root(root: usize, g: &[Vec<usize>]) -> LCA {
+        fn dfs(
+            i: usize,
+            p: Option<usize>,
+            d: usize,
+            g: &[Vec<usize>],
+            depth: &mut [usize],
+            parent: &mut [Vec<Option<usize>>],
+        ) {
+            parent[i][0] = p;
+            depth[i] = d;
+
+            for &t in &g[i] {
+                if Some(t) != p {
+                    dfs(t, Some(i), d + 1, g, depth, parent);
+                }
+            }
+        }
+        let n = g.len();
+        let l2 = (1..).find(|i| 1usize << i > n).unwrap();
+        let mut depth = vec![0; n];
+        let mut parent = vec![vec![None; l2 + 1]; n];
+
+        dfs(root, None, 0, &g, &mut depth, &mut parent);
+
+        for i in 1..l2 + 1 {
+            for j in 0..n {
+                if let Some(p) = parent[j][i - 1] {
+                    parent[j][i] = parent[p][i - 1];
+                }
+            }
+        }
+
+        LCA {
+            depth: depth,
+            parent: parent,
+        }
+    }
+
+    pub fn lca(&self, mut a: usize, mut b: usize) -> usize {
+        use std::mem::swap;
+        if self.depth[b] < self.depth[a] {
+            swap(&mut a, &mut b);
+        }
+
+        while self.depth[a] != self.depth[b] {
+            b = self.parent[b][(self.depth[b] - self.depth[a]).trailing_zeros() as usize].unwrap();
+        }
+
+        if a == b {
+            return a;
+        }
+
+        for i in (0..self.parent[0].len()).rev() {
+            if self.parent[a][i] != self.parent[b][i] {
+                a = self.parent[a][i].unwrap();
+                b = self.parent[b][i].unwrap();
+            }
+        }
+        self.parent[a][0].unwrap()
+    }
+}
+
+#[test]
+fn test_lca() {
+    use rand::{Rng, SeedableRng, StdRng};
+    let size = 1024;
+
+    let mut g = vec![Vec::new(); size + 1];
+
+    for i in 2..size + 1 {
+        g[i / 2].push(i);
+        g[i].push(1 / 2);
+    }
+
+    let lca = LCA::with_root(1, &g);
+    let mut rng = StdRng::from_seed(&[1, 2, 3, 1, 2]);
+
+    for _ in 0..10000 {
+        let mut a = rng.next_u32() as usize % size + 1;
+        let mut b = rng.next_u32() as usize % size + 1;
+
+        let p = lca.lca(a, b);
+
+        while a.leading_zeros() > b.leading_zeros() {
+            b >>= 1;
+        }
+
+        while b.leading_zeros() > a.leading_zeros() {
+            a >>= 1;
+        }
+
+        while a != b {
+            a >>= 1;
+            b >>= 1;
+        }
+
+        assert_eq!(p, a);
+    }
+}
