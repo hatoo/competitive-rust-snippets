@@ -78,8 +78,10 @@ impl<M: Monoid> SEG<M> {
     }
 }
 
+#[snippet = "Monoid-SUM"]
 #[allow(dead_code)]
 struct SUM;
+#[snippet = "Monoid-SUM"]
 impl Monoid for SUM {
     type T = u64;
     fn id() -> Self::T {
