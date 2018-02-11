@@ -1,51 +1,55 @@
 #[snippet = "SEG"]
 #[allow(dead_code)]
-/// Segment Tree
-pub struct SEG<T: Clone, F: Fn(&T, &T) -> T> {
-    n: usize,
-    buf: Vec<T>,
-    reducer: F,
-    zero: T,
+pub trait Monoid {
+    type T: Clone;
+    fn id() -> Self::T;
+    fn op(a: &Self::T, b: &Self::T) -> Self::T;
 }
 
 #[snippet = "SEG"]
-impl<T: Clone, F: Fn(&T, &T) -> T> SEG<T, F> {
+#[allow(dead_code)]
+/// Segment Tree
+pub struct SEG<M: Monoid> {
+    n: usize,
+    buf: Vec<M::T>,
+}
+
+#[snippet = "SEG"]
+impl<M: Monoid> SEG<M> {
     #[allow(dead_code)]
-    pub fn new(n: usize, zero: &T, f: F) -> SEG<T, F> {
+    pub fn new(n: usize) -> SEG<M> {
         SEG {
             n: n,
-            buf: vec![zero.clone(); 2 * n],
-            reducer: f,
-            zero: zero.clone(),
+            buf: vec![M::id().clone(); 2 * n],
         }
     }
 
     #[allow(dead_code)]
-    pub fn update(&mut self, k: usize, a: T) {
+    pub fn update(&mut self, k: usize, a: M::T) {
         let mut k = k + self.n;
         self.buf[k] = a;
 
         while k > 0 {
             k >>= 1;
-            self.buf[k] = (self.reducer)(&self.buf[k << 1], &self.buf[(k << 1) | 1]);
+            self.buf[k] = M::op(&self.buf[k << 1], &self.buf[(k << 1) | 1]);
         }
     }
 
     #[allow(dead_code)]
-    pub fn add(&mut self, k: usize, a: &T) {
+    pub fn add(&mut self, k: usize, a: &M::T) {
         let mut k = k + self.n;
-        self.buf[k] = (self.reducer)(&self.buf[k], a);
+        self.buf[k] = M::op(&self.buf[k], a);
 
         while k > 0 {
             k >>= 1;
-            self.buf[k] = (self.reducer)(&self.buf[k << 1], &self.buf[(k << 1) | 1]);
+            self.buf[k] = M::op(&self.buf[k << 1], &self.buf[(k << 1) | 1]);
         }
     }
 
     #[allow(dead_code)]
-    fn query(&self, l: usize, r: usize) -> Option<T> {
+    fn query(&self, l: usize, r: usize) -> Option<M::T> {
         let combine = |resl, resr| match (resl, resr) {
-            (Some(l), Some(r)) => Some((self.reducer)(&l, &r)),
+            (Some(l), Some(r)) => Some(M::op(&l, &r)),
             (Some(l), None) => Some(l),
             (None, Some(r)) => Some(r),
             _ => None,
@@ -74,6 +78,18 @@ impl<T: Clone, F: Fn(&T, &T) -> T> SEG<T, F> {
     }
 }
 
+#[allow(dead_code)]
+struct SUM;
+impl Monoid for SUM {
+    type T = u64;
+    fn id() -> Self::T {
+        0
+    }
+    fn op(a: &Self::T, b: &Self::T) -> Self::T {
+        *a + *b
+    }
+}
+
 #[test]
 fn test_segtree_vs_cumulative_sum() {
     use rand::{Rng, SeedableRng, StdRng};
@@ -81,7 +97,7 @@ fn test_segtree_vs_cumulative_sum() {
 
     let size = 1000;
     let mut cum_sum = vec![0; size + 1];
-    let mut seg = SEG::new(size, &0, |&a, &b| a + b);
+    let mut seg: SEG<SUM> = SEG::new(size);
 
     let mut rng = StdRng::from_seed(&[1, 2, 3]);
 
@@ -108,8 +124,22 @@ fn test_segtree_vs_cumulative_sum() {
 
 #[test]
 fn test_segtree_same_index() {
-    let seg = SEG::new(8, &0, |&a, &b| a + b);
+    let seg: SEG<SUM> = SEG::new(8);
     assert_eq!(seg.query(0, 0).unwrap_or(0), 0);
+}
+
+#[allow(dead_code)]
+struct APPEND;
+impl Monoid for APPEND {
+    type T = Vec<u64>;
+    fn id() -> Self::T {
+        Vec::new()
+    }
+    fn op(a: &Self::T, b: &Self::T) -> Self::T {
+        let mut res = a.clone();
+        res.extend(b.iter().cloned());
+        res
+    }
 }
 
 #[test]
@@ -119,12 +149,7 @@ fn test_segtree_non_commutative() {
     let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
 
     let size = 100;
-    let mut seg = SEG::new(size, &Vec::new(), |a, b| {
-        let mut res = Vec::with_capacity(a.len() + b.len());
-        res.extend(a.iter());
-        res.extend(b.iter());
-        res
-    });
+    let mut seg: SEG<APPEND> = SEG::new(size);
     let mut v = vec![0; size];
 
     for i in 0..size {
@@ -148,7 +173,7 @@ fn bench_segtree_update(b: &mut Bencher) {
     use rand::{Rng, SeedableRng, StdRng};
 
     let size = 10000;
-    let mut seg = SEG::new(size, &0, |&a, &b| a + b);
+    let mut seg: SEG<SUM> = SEG::new(size);
     let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
 
     for i in 0..size {
@@ -177,7 +202,7 @@ fn bench_segtree_query(b: &mut Bencher) {
     use rand::{Rng, SeedableRng, StdRng};
 
     let size = 10000;
-    let mut seg = SEG::new(size, &0, |&a, &b| a + b);
+    let mut seg: SEG<SUM> = SEG::new(size);
     let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
 
     for i in 0..size {
