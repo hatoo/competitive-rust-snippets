@@ -45,6 +45,90 @@ pub fn factor_table(max_n: usize) -> Vec<usize> {
     res
 }
 
+#[snippet = "XorShift"]
+#[derive(Debug)]
+#[allow(dead_code)]
+pub struct Xorshift {
+    seed: u64,
+}
+
+#[snippet = "XorShift"]
+impl Xorshift {
+    #[allow(dead_code)]
+    pub fn new(seed: u64) -> Xorshift {
+        Xorshift { seed: seed }
+    }
+
+    #[inline(always)]
+    #[allow(dead_code)]
+    pub fn next(&mut self) -> u64 {
+        self.seed = self.seed ^ (self.seed << 13);
+        self.seed = self.seed ^ (self.seed >> 7);
+        self.seed = self.seed ^ (self.seed << 17);
+        self.seed
+    }
+
+    #[inline(always)]
+    #[allow(dead_code)]
+    pub fn rand(&mut self, m: u64) -> u64 {
+        self.next() % m
+    }
+
+    #[inline(always)]
+    #[allow(dead_code)]
+    pub fn randf(&mut self) -> f64 {
+        use std::mem;
+        const UPPER_MASK: u64 = 0x3FF0000000000000;
+        const LOWER_MASK: u64 = 0xFFFFFFFFFFFFF;
+        let tmp = UPPER_MASK | (self.next() & LOWER_MASK);
+        let result: f64 = unsafe { mem::transmute(tmp) };
+        result - 1.0
+    }
+}
+
+#[test]
+fn test_xorshift_randf() {
+    let mut rng = Xorshift::new(124324);
+    for _ in 0..1_000_000 {
+        let f = rng.randf();
+        assert!(f >= 0.0);
+        assert!(f <= 1.0);
+    }
+}
+
+#[cfg(test)]
+use test::Bencher;
+
+#[bench]
+fn bench_xor_shift_next(b: &mut Bencher) {
+    let mut rng = Xorshift::new(23489389);
+    b.iter(|| {
+        for _ in 0..1_000_000 {
+            rng.next();
+        }
+    });
+}
+
+#[bench]
+fn bench_xor_shift_rand(b: &mut Bencher) {
+    let mut rng = Xorshift::new(23489389);
+    b.iter(|| {
+        for _ in 0..1_000_000 {
+            rng.rand(10000);
+        }
+    });
+}
+
+#[bench]
+fn bench_xor_shift_randf(b: &mut Bencher) {
+    let mut rng = Xorshift::new(23489389);
+    b.iter(|| {
+        for _ in 0..1_000_000 {
+            rng.randf();
+        }
+    });
+}
+
 #[test]
 fn test_partition_dp() {
     const M: u64 = 1000000007;
