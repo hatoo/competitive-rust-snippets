@@ -55,7 +55,14 @@ pub struct Xorshift {
 #[snippet = "XorShift"]
 impl Xorshift {
     #[allow(dead_code)]
-    pub fn new(seed: u64) -> Xorshift {
+    pub fn new() -> Xorshift {
+        Xorshift {
+            seed: 0xf0fb588ca2196dac,
+        }
+    }
+
+    #[allow(dead_code)]
+    pub fn with_seed(seed: u64) -> Xorshift {
         Xorshift { seed: seed }
     }
 
@@ -88,7 +95,7 @@ impl Xorshift {
 
 #[test]
 fn test_xorshift_randf() {
-    let mut rng = Xorshift::new(124324);
+    let mut rng = Xorshift::new();
     for _ in 0..1_000_000 {
         let f = rng.randf();
         assert!(f >= 0.0);
@@ -101,7 +108,7 @@ use test::Bencher;
 
 #[bench]
 fn bench_xor_shift_next(b: &mut Bencher) {
-    let mut rng = Xorshift::new(23489389);
+    let mut rng = Xorshift::new();
     b.iter(|| {
         for _ in 0..1_000_000 {
             rng.next();
@@ -111,7 +118,7 @@ fn bench_xor_shift_next(b: &mut Bencher) {
 
 #[bench]
 fn bench_xor_shift_rand(b: &mut Bencher) {
-    let mut rng = Xorshift::new(23489389);
+    let mut rng = Xorshift::new();
     b.iter(|| {
         for _ in 0..1_000_000 {
             rng.rand(10000);
@@ -121,7 +128,7 @@ fn bench_xor_shift_rand(b: &mut Bencher) {
 
 #[bench]
 fn bench_xor_shift_randf(b: &mut Bencher) {
-    let mut rng = Xorshift::new(23489389);
+    let mut rng = Xorshift::new();
     b.iter(|| {
         for _ in 0..1_000_000 {
             rng.randf();
