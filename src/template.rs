@@ -97,6 +97,9 @@ macro_rules! get {
                   .collect::<Vec<_>>()
           }
       };
+      ($t:ty ;; $n:expr) => {
+          (0..$n).map(|_| get!($t ;;)).collect::<Vec<_>>()
+      };
   }
 
 #[allow(unused_macros)]
