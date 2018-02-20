@@ -35,6 +35,11 @@ mod util {
     }
 
     #[allow(dead_code)]
+    pub fn chars() -> Vec<char> {
+        line().chars().collect()
+    }
+
+    #[allow(dead_code)]
     pub fn gets<T: FromStr>() -> Vec<T>
     where
         <T as FromStr>::Err: Debug,
