@@ -64,7 +64,7 @@ impl std::ops::ShlAssign<usize> for BitSet {
         let q = x >> 6;
         let r = x & 63;
 
-        if q > self.buf.len() {
+        if q >= self.buf.len() {
             for x in &mut self.buf {
                 *x = 0;
             }
@@ -245,6 +245,12 @@ fn test_bitset_shl() {
     do_test(6400, 514);
     do_test(6400, 6400);
     do_test(6400, 16400);
+
+    let mut t = BitSet::new(310);
+
+    for i in 0..31000 {
+        t <<= i;
+    }
 }
 
 #[test]
@@ -283,6 +289,12 @@ fn test_bitset_shr() {
     do_test(63, 65);
     do_test(6400, 6400);
     do_test(6400, 16400);
+
+    let mut t = BitSet::new(310);
+
+    for i in 0..31000 {
+        t >>= i;
+    }
 }
 
 #[test]
