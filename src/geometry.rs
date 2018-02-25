@@ -24,6 +24,16 @@ impl Vector2D {
     pub fn det(self, other: Vector2D) -> f64 {
         Self::add(self.0 * other.1, -self.1 * other.0)
     }
+    pub fn len(&self) -> f64 {
+        f64::sqrt((self.0).powi(2) + (self.1).powi(2))
+    }
+    pub fn unit(self) -> Vector2D {
+        let l = self.len();
+        Vector2D(self.0 / l, self.1 / l)
+    }
+    pub fn normal(self) -> Vector2D {
+        Vector2D(self.1, -self.0)
+    }
 }
 
 #[snippet = "Vector2D"]
@@ -41,6 +51,24 @@ impl std::ops::Sub for Vector2D {
 
     fn sub(self, rhs: Vector2D) -> Self::Output {
         Vector2D(Vector2D::add(self.0, -rhs.0), Vector2D::add(self.1, -rhs.1))
+    }
+}
+
+#[snippet = "Vector2D"]
+impl std::ops::Mul<f64> for Vector2D {
+    type Output = Vector2D;
+
+    fn mul(self, rhs: f64) -> Self::Output {
+        Vector2D(rhs * self.0, rhs * self.1)
+    }
+}
+
+#[snippet = "Vector2D"]
+impl std::ops::Div<f64> for Vector2D {
+    type Output = Vector2D;
+
+    fn div(self, rhs: f64) -> Self::Output {
+        Vector2D(self.0 / rhs, self.1 / rhs)
     }
 }
 
@@ -79,4 +107,21 @@ fn convex_hull(vs: &[Vector2D]) -> Vec<usize> {
 
     res.pop();
     res
+}
+
+#[test]
+fn test_convex_hull() {
+    let vs = vec![
+        Vector2D(-1.0, -1.0),
+        Vector2D(-1.0, 1.0),
+        Vector2D(1.0, 1.0),
+        Vector2D(1.0, -1.0),
+        Vector2D(0.0, 0.0),
+        Vector2D(0.1, 0.1),
+    ];
+
+    let mut idx = convex_hull(&vs);
+    idx.sort();
+
+    assert_eq!(&idx, &[0, 1, 2, 3]);
 }
