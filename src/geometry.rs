@@ -77,5 +77,6 @@ fn convex_hull(vs: &[Vector2D]) -> Vec<usize> {
         res.push(i);
     }
 
+    res.pop();
     res
 }
