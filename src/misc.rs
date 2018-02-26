@@ -4,6 +4,10 @@ use std;
 #[allow(dead_code)]
 pub const M: u64 = 1_000_000_007;
 
+#[snippet = "INF"]
+#[allow(dead_code)]
+pub const INF: u64 = 1 << 60;
+
 #[snippet = "CmpBy"]
 pub struct CmpBy<T, U>(T, U);
 #[snippet = "CmpBy"]
