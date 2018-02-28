@@ -27,3 +27,4 @@ pub mod math;
 pub mod template;
 pub mod graph;
 pub mod geometry;
+pub mod skew_heap;
