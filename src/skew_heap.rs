@@ -1,3 +1,7 @@
+//! Skew Heap
+//!
+//! std::collections::BinaryHeap is always faster in my experience.
+
 use std;
 
 #[snippet = "SkewHeap"]
