@@ -107,8 +107,4 @@ impl WeightedUFT {
         self.diff_weight[y] = w;
         true
     }
-
-    pub fn diff(&mut self, x: usize, y: usize) -> i64 {
-        self.weight(x) - self.weight(y)
-    }
 }
