@@ -126,7 +126,9 @@ pub trait SEGimpl {
 }
 
 #[allow(dead_code)]
+#[snippet = "RangeAddSum"]
 struct RangeAddSum();
+#[snippet = "RangeAddSum"]
 impl SEGimpl for RangeAddSum {
     type Elem = (u64, u64);
     type A = u64;
