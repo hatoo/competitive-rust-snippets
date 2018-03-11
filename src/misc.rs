@@ -33,26 +33,26 @@ impl<T: Ord, U> Ord for CmpBy<T, U> {
 
 #[snippet = "adjacent4"]
 #[allow(dead_code)]
-fn adjacent4(x: usize, y: usize, sx: usize, sy: usize) -> Vec<(usize, usize)> {
-    [(-1, 0), (1, 0), (0, -1), (0, 1)]
-        .into_iter()
-        .filter_map(|&(dx, dy)| {
-            let nx = x as isize + dx;
-            let ny = y as isize + dy;
+fn adjacent4(x: usize, y: usize, sx: usize, sy: usize) -> Box<Iterator<Item = (usize, usize)>> {
+    // This code looks verbose but is needed to Rust 1.15.
+    static DXDY: [(isize, isize); 4] = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
-            if nx >= 0 && nx < sx as isize && ny >= 0 && ny < sy as isize {
-                Some((nx as usize, ny as usize))
-            } else {
-                None
-            }
-        })
-        .collect()
+    Box::new(DXDY.iter().filter_map(move |&(dx, dy)| {
+        let nx = x as isize + dx;
+        let ny = y as isize + dy;
+        if nx >= 0 && nx < sx as isize && ny >= 0 && ny < sy as isize {
+            Some((nx as usize, ny as usize))
+        } else {
+            None
+        }
+    }))
 }
 
 #[snippet = "adjacent8"]
 #[allow(dead_code)]
-fn adjacent8(x: usize, y: usize, sx: usize, sy: usize) -> Vec<(usize, usize)> {
-    [
+fn adjacent8(x: usize, y: usize, sx: usize, sy: usize) -> Box<Iterator<Item = (usize, usize)>> {
+    // This code looks verbose but is needed to Rust 1.15.
+    static DXDY: [(isize, isize); 8] = [
         (-1, 0),
         (1, 0),
         (0, -1),
@@ -61,30 +61,30 @@ fn adjacent8(x: usize, y: usize, sx: usize, sy: usize) -> Vec<(usize, usize)> {
         (-1, 1),
         (1, -1),
         (1, 1),
-    ].into_iter()
-        .filter_map(|&(dx, dy)| {
-            let nx = x as isize + dx;
-            let ny = y as isize + dy;
+    ];
 
-            if nx >= 0 && nx < sx as isize && ny >= 0 && ny < sy as isize {
-                Some((nx as usize, ny as usize))
-            } else {
-                None
-            }
-        })
-        .collect()
+    Box::new(DXDY.iter().filter_map(move |&(dx, dy)| {
+        let nx = x as isize + dx;
+        let ny = y as isize + dy;
+
+        if nx >= 0 && nx < sx as isize && ny >= 0 && ny < sy as isize {
+            Some((nx as usize, ny as usize))
+        } else {
+            None
+        }
+    }))
 }
 
 #[test]
 fn test_adjacent4() {
-    let mut a4 = adjacent4(1, 1, 3, 3);
+    let mut a4 = adjacent4(1, 1, 3, 3).collect::<Vec<_>>();
     let mut expected = [(0, 1), (2, 1), (1, 0), (1, 2)];
     a4.sort();
     expected.sort();
 
     assert_eq!(&a4, &expected);
 
-    let mut a4 = adjacent4(0, 0, 3, 3);
+    let mut a4 = adjacent4(0, 0, 3, 3).collect::<Vec<_>>();
     let mut expected = [(1, 0), (0, 1)];
     a4.sort();
     expected.sort();
@@ -94,7 +94,7 @@ fn test_adjacent4() {
 
 #[test]
 fn test_adjacent8() {
-    let mut a8 = adjacent8(1, 1, 3, 3);
+    let mut a8 = adjacent8(1, 1, 3, 3).collect::<Vec<_>>();
     let mut expected = [
         (0, 0),
         (0, 1),
@@ -110,7 +110,7 @@ fn test_adjacent8() {
 
     assert_eq!(&a8, &expected);
 
-    let mut a8 = adjacent8(0, 0, 3, 3);
+    let mut a8 = adjacent8(0, 0, 3, 3).collect::<Vec<_>>();
     let mut expected = [(1, 0), (0, 1), (1, 1)];
     a8.sort();
     expected.sort();
