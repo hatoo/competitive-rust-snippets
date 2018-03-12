@@ -105,7 +105,7 @@ macro_rules! get {
 #[allow(unused_macros)]
 macro_rules! debug {
       ($($a:expr),*) => {
-          println!(concat!($(stringify!($a), " = {:?}, "),*), $($a),*);
+          eprintln!(concat!($(stringify!($a), " = {:?}, "),*), $($a),*);
       }
   }
 
