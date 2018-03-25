@@ -235,7 +235,7 @@ impl HeavyLightDecomposition {
 use std::cmp::min;
 
 #[snippet = "articulation_points"]
-fn articulation_points(g: &[Vec<usize>]) -> Vec<usize> {
+pub fn articulation_points(g: &[Vec<usize>]) -> Vec<usize> {
     fn dfs(
         i: usize,
         p: usize,
