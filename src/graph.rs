@@ -137,6 +137,7 @@ pub struct Tree {
 }
 
 #[snippet = "Tree"]
+#[snippet = "HeavyLightDecomposition"]
 impl Tree {
     pub fn from_neighbor_list(n: usize, root: usize, g: &[Vec<usize>]) -> Tree {
         let mut parent = vec![None; n];
