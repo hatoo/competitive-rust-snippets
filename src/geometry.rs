@@ -7,10 +7,9 @@ pub struct Vector2D(f64, f64);
 
 #[snippet = "Vector2D"]
 impl Vector2D {
-    const EPS: f64 = 1e-10;
     pub fn add(a: f64, b: f64) -> f64 {
         let c = a + b;
-        if c.abs() < Self::EPS {
+        if c.abs() < 1e-10 {
             0.0
         } else {
             c
