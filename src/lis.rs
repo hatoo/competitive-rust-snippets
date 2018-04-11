@@ -3,6 +3,7 @@ use std::cmp::Ordering;
 use binary_search::BinarySearch;
 
 #[snippet = "lis"]
+#[snippet(include = "BinarySearch")]
 #[derive(PartialEq, Eq, Clone, Debug)]
 enum Inf<T> {
     Val(T),

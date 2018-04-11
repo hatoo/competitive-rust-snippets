@@ -1,7 +1,6 @@
 use std::cmp::Ordering;
 
 #[snippet = "BinarySearch"]
-#[snippet = "lis"]
 /// Equivalent to std::lowerbound and std::upperbound in c++
 pub trait BinarySearch<T> {
     fn lower_bound(&self, &T) -> usize;
@@ -9,7 +8,6 @@ pub trait BinarySearch<T> {
 }
 
 #[snippet = "BinarySearch"]
-#[snippet = "lis"]
 impl<T: Ord> BinarySearch<T> for [T] {
     fn lower_bound(&self, x: &T) -> usize {
         let mut low = 0;
