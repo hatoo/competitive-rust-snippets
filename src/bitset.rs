@@ -1,9 +1,9 @@
 use std;
 
 #[snippet = "BitSet"]
-const TRUE: &bool = &true;
+const TRUE: &'static bool = &true;
 #[snippet = "BitSet"]
-const FALSE: &bool = &false;
+const FALSE: &'static bool = &false;
 
 #[derive(Clone, Debug)]
 #[snippet = "BitSet"]
