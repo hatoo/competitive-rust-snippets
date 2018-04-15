@@ -28,9 +28,10 @@ pub fn extgcd(a: i64, b: i64) -> (i64, i64, i64) {
 
 #[snippet = "mod"]
 #[allow(dead_code)]
+/// x ^ n % m
 pub fn mod_pow(x: u64, n: u64, m: u64) -> u64 {
     let mut res = 1;
-    let mut x = x;
+    let mut x = x % m;
     let mut n = n;
     while n > 0 {
         if n & 1 == 1 {
@@ -142,5 +143,16 @@ fn test_fact_inv_table() {
 
     for i in 0..size {
         assert_eq!(fact[i] * fact_inv[i] % m, 1);
+    }
+}
+
+#[test]
+fn test_mod_pow() {
+    let m = 1_000_000_007;
+    let x = 1234;
+    let mut t = 1;
+    for i in 0..1000 {
+        assert_eq!(mod_pow(x, i, m), t);
+        t = t * x % m;
     }
 }
