@@ -47,34 +47,27 @@ impl<M: Monoid> SEG<M> {
     }
 
     #[allow(dead_code)]
-    fn query(&self, l: usize, r: usize) -> Option<M::T> {
-        let combine = |resl, resr| match (resl, resr) {
-            (Some(l), Some(r)) => Some(M::op(&l, &r)),
-            (Some(l), None) => Some(l),
-            (None, Some(r)) => Some(r),
-            _ => None,
-        };
-
-        let mut vl = None;
-        let mut vr = None;
+    pub fn query(&self, l: usize, r: usize) -> M::T {
+        let mut vl = M::id();
+        let mut vr = M::id();
 
         let mut l = l + self.n;
         let mut r = r + self.n;
 
         while l < r {
             if l & 1 == 1 {
-                vl = combine(vl, Some(self.buf[l].clone()));
+                vl = M::op(&vl, &self.buf[l]);
                 l += 1;
             }
             if r & 1 == 1 {
                 r -= 1;
-                vr = combine(Some(self.buf[r].clone()), vr);
+                vr = M::op(&self.buf[r], &vr);
             }
 
             l >>= 1;
             r >>= 1;
         }
-        combine(vl, vr)
+        M::op(&vl, &vr)
     }
 }
 
@@ -117,17 +110,14 @@ fn test_segtree_vs_cumulative_sum() {
 
     for _ in 0..1000 {
         let r = random_range(&mut rng, 0, size);
-        assert_eq!(
-            seg.query(r.start, r.end).unwrap_or(0),
-            cum_sum[r.end] - cum_sum[r.start]
-        );
+        assert_eq!(seg.query(r.start, r.end), cum_sum[r.end] - cum_sum[r.start]);
     }
 }
 
 #[test]
 fn test_segtree_same_index() {
     let seg: SEG<SUM> = SEG::new(8);
-    assert_eq!(seg.query(0, 0).unwrap_or(0), 0);
+    assert_eq!(seg.query(0, 0), 0);
 }
 
 #[allow(dead_code)]
@@ -146,8 +136,8 @@ impl Monoid for APPEND {
 
 #[test]
 fn test_segtree_non_commutative() {
-    use util;
     use rand::{Rng, SeedableRng, StdRng};
+    use util;
     let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
 
     let size = 100;
@@ -163,7 +153,7 @@ fn test_segtree_non_commutative() {
     for _ in 0..100 {
         let r = util::random_range(&mut rng, 0, size);
         let res = seg.query(r.start, r.end);
-        assert_eq!(res.as_ref().map(|a| a.as_slice()).unwrap_or(&[]), &v[r]);
+        assert_eq!(res.as_slice(), &v[r]);
     }
 }
 
@@ -200,8 +190,8 @@ fn bench_segtree_update(b: &mut Bencher) {
 
 #[bench]
 fn bench_segtree_query(b: &mut Bencher) {
-    use util;
     use rand::{Rng, SeedableRng, StdRng};
+    use util;
 
     let size = 10000;
     let mut seg: SEG<SUM> = SEG::new(size);
