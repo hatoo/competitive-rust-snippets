@@ -47,6 +47,11 @@ impl<M: Monoid> SEG<M> {
     }
 
     #[allow(dead_code)]
+    pub fn get(&self, i: usize) -> M::T {
+        self.query(i, i + 1)
+    }
+
+    #[allow(dead_code)]
     pub fn query(&self, l: usize, r: usize) -> M::T {
         let mut vl = M::id();
         let mut vr = M::id();
