@@ -414,7 +414,7 @@ fn bench_interval_heap(b: &mut Bencher) {
 }
 
 #[bench]
-fn bench_limited_interval_heap(b: &mut Bencher) {
+fn bench_limited_interval_heap_limit_half(b: &mut Bencher) {
     let size = 100000;
 
     use rand::{Rng, SeedableRng, StdRng};
