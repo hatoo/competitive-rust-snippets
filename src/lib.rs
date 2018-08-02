@@ -28,3 +28,4 @@ pub mod template;
 pub mod graph;
 pub mod geometry;
 pub mod skew_heap;
+pub mod interval_heap;
