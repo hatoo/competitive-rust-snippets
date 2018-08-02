@@ -381,6 +381,24 @@ fn test_limited_interval_heap() {
 use test::Bencher;
 
 #[bench]
+fn bench_sort(b: &mut Bencher) {
+    let size = 100000;
+
+    use rand::{Rng, SeedableRng, StdRng};
+    use std::collections::BinaryHeap;
+
+    let mut vec = Vec::with_capacity(size);
+    let mut rng = StdRng::from_seed(&[1, 2, 3]);
+
+    b.iter(|| {
+        for _ in 0..size {
+            vec.push(rng.next_u64());
+        }
+        vec.sort();
+    });
+}
+
+#[bench]
 fn bench_binary_heap(b: &mut Bencher) {
     let size = 100000;
 
