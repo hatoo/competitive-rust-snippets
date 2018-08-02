@@ -340,3 +340,27 @@ fn test_interval_heap_combined() {
         }
     }
 }
+
+#[test]
+fn test_limited_interval_heap() {
+    let size = 10000;
+
+    use rand::{Rng, SeedableRng, StdRng};
+    use std::collections::BinaryHeap;
+
+    let mut rng = StdRng::from_seed(&[1, 2, 3]);
+
+    let mut interval_heap = LimitedIntervalHeap::new(size/2);
+    let mut binary_heap = BinaryHeap::new();
+
+    for _ in 0..size {
+        let x = rng.next_u64();
+
+        interval_heap.push(x);
+        binary_heap.push(x);
+    }
+
+    for _ in 0..size / 2 {
+        assert_eq!(binary_heap.pop(), interval_heap.pop());
+    }
+}
