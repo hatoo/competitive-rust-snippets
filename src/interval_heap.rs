@@ -62,6 +62,10 @@ impl<T: Ord + Eq> IntervalHeap<T> {
             return self.data.pop();
         }
 
+        if self.data.is_empty() {
+            return None;
+        }
+
         let len = self.data.len();
         self.data.swap(0, len - 1);
         let res = self.data.pop();
@@ -74,6 +78,10 @@ impl<T: Ord + Eq> IntervalHeap<T> {
     fn pop_max(&mut self) -> Option<T> {
         if self.data.len() <= 2 {
             return self.data.pop();
+        }
+
+        if self.data.is_empty() {
+            return None;
         }
 
         let len = self.data.len();
@@ -263,7 +271,7 @@ fn test_interval_heap_push_pop() {
         binary_heap.push(x);
     }
 
-    for _ in 0..size {
+    for _ in 0..size + 1 {
         assert_eq!(binary_heap.pop(), interval_heap.pop_max());
     }
 }
@@ -290,7 +298,7 @@ fn test_interval_heap_vs_vec_deque() {
     vec.sort();
     let mut vec_deque = vec.into_iter().collect::<VecDeque<_>>();
 
-    for _ in 0..size {
+    for _ in 0..size + 1 {
         if rng.next_f64() < 0.5 {
             assert_eq!(interval_heap.pop_min(), vec_deque.pop_front());
         } else {
@@ -350,7 +358,7 @@ fn test_limited_interval_heap() {
 
     let mut rng = StdRng::from_seed(&[1, 2, 3]);
 
-    let mut interval_heap = LimitedIntervalHeap::new(size/2);
+    let mut interval_heap = LimitedIntervalHeap::new(size / 2);
     let mut binary_heap = BinaryHeap::new();
 
     for _ in 0..size {
@@ -363,4 +371,56 @@ fn test_limited_interval_heap() {
     for _ in 0..size / 2 {
         assert_eq!(binary_heap.pop(), interval_heap.pop());
     }
+}
+
+#[cfg(test)]
+use test::Bencher;
+
+#[bench]
+fn bench_binary_heap(b: &mut Bencher) {
+    let size = 100000;
+
+    use rand::{Rng, SeedableRng, StdRng};
+    use std::collections::BinaryHeap;
+
+    let mut heap = BinaryHeap::new();
+    let mut rng = StdRng::from_seed(&[1, 2, 3]);
+
+    b.iter(|| {
+        for _ in 0..size {
+            heap.push(rng.next_u64());
+        }
+    });
+}
+
+#[bench]
+fn bench_interval_heap(b: &mut Bencher) {
+    let size = 100000;
+
+    use rand::{Rng, SeedableRng, StdRng};
+
+    let mut heap = IntervalHeap::new();
+    let mut rng = StdRng::from_seed(&[1, 2, 3]);
+
+    b.iter(|| {
+        for _ in 0..size {
+            heap.push(rng.next_u64());
+        }
+    });
+}
+
+#[bench]
+fn bench_limited_interval_heap(b: &mut Bencher) {
+    let size = 100000;
+
+    use rand::{Rng, SeedableRng, StdRng};
+
+    let mut heap = LimitedIntervalHeap::new(size / 2);
+    let mut rng = StdRng::from_seed(&[1, 2, 3]);
+
+    b.iter(|| {
+        for _ in 0..size {
+            heap.push(rng.next_u64());
+        }
+    });
 }
