@@ -385,7 +385,6 @@ fn bench_sort(b: &mut Bencher) {
     let size = 100000;
 
     use rand::{Rng, SeedableRng, StdRng};
-    use std::collections::BinaryHeap;
 
     let mut vec = Vec::with_capacity(size);
     let mut rng = StdRng::from_seed(&[1, 2, 3]);
