@@ -50,6 +50,18 @@ mod util {
 
 #[allow(unused_macros)]
 macro_rules! get {
+      ([$t:ty]) => {
+          {
+              let mut line: String = String::new();
+              stdin().read_line(&mut line).unwrap();
+              line.split_whitespace()
+                  .map(|t| t.parse::<$t>().unwrap())
+                  .collect::<Vec<_>>()
+          }
+      };
+      ([$t:ty]; $n:expr) => {
+          (0..$n).map(|_| get!([$t])).collect::<Vec<_>>()
+      };
       ($t:ty) => {
           {
               let mut line: String = String::new();
@@ -76,18 +88,6 @@ macro_rules! get {
           (0..$n).map(|_|
               get!($($t),*)
           ).collect::<Vec<_>>()
-      };
-      ($t:ty ;;) => {
-          {
-              let mut line: String = String::new();
-              stdin().read_line(&mut line).unwrap();
-              line.split_whitespace()
-                  .map(|t| t.parse::<$t>().unwrap())
-                  .collect::<Vec<_>>()
-          }
-      };
-      ($t:ty ;; $n:expr) => {
-          (0..$n).map(|_| get!($t ;;)).collect::<Vec<_>>()
       };
   }
 
