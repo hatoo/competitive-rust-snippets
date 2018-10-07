@@ -1,3 +1,4 @@
+#![feature(custom_inner_attributes)]
 #![feature(plugin)]
 #![feature(test)]
 #![plugin(cargo_snippet)]
