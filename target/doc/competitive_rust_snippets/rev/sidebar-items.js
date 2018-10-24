@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Rev","Equivalent to std::cmp::Reverse"]]});

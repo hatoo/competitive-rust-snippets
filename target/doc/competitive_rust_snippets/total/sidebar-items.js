@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Total","Implement Eq and Ord for a type which has only PartialEq and PartialOrd. It is useful when sorting a Vec of f64"]]});

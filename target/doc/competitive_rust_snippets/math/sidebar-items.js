@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["convex_hull_check","A check function for convex hull trick"],["factor_table",""],["partition_dp","dp[i][j] = j th partition number of i"]],"struct":[["Xorshift",""]]});

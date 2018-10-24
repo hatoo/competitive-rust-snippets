@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SEG","Segment Tree"]],"trait":[["Monoid",""]]});

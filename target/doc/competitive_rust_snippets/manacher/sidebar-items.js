@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Manacher","Manacher's algorithm"]]});

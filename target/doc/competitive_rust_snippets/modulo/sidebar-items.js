@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["extgcd","(gcd, x, y)"],["fact_inv_table","Factorial and Inverse factorial table"],["fact_table",""],["gcd",""],["lcm",""],["mod_comb","C(n, k) % p"],["mod_comb_repetition","H(n, k) % p"],["mod_fact","(a mod p, e when n! = a p^e)"],["mod_inverse",""],["mod_pow","x ^ n % m"]]});

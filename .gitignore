@@ -1,5 +1,6 @@
 
-/target/
+/target/*
+!/target/doc/
 **/*.rs.bk
 Cargo.lock
 /bench/

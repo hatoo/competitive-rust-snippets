@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["UFT","Union Find Tree"],["WeightedUFT","https://qiita.com/drken/items/cce6fc5c579051e64fab"]]});

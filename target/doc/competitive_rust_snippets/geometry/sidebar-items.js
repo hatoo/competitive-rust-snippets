@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["closest_pair",""],["is_intersected","Is line a-b and line c-d intersected ?"]],"struct":[["Vector2D",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["LexicalPermutation","Ported from bluss/permutohedron"]]});

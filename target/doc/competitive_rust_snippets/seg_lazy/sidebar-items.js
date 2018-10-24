@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SEG","Lazy Segment Tree"]],"trait":[["SEGimpl",""]]});

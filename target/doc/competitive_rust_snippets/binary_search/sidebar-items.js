@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["BinarySearch","Equivalent to std::lowerbound and std::upperbound in c++"]]});
