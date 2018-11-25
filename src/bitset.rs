@@ -124,8 +124,10 @@ impl std::ops::ShrAssign<usize> for BitSet {
             let len = self.buf.len();
             self.buf[len - q - 1] = self.buf[len - 1] >> r;
         }
-        for i in self.buf.len() - q..self.buf.len() {
-            self.buf[i] = 0;
+
+        let len = self.buf.len();
+        for x in &mut self.buf[len - q..] {
+            *x = 0;
         }
     }
 }
