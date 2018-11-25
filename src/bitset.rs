@@ -81,8 +81,9 @@ impl std::ops::ShlAssign<usize> for BitSet {
             }
             self.buf[q] = self.buf[0] << r;
         }
-        for i in 0..q {
-            self.buf[i] = 0;
+
+        for x in &mut self.buf[..q] {
+            *x = 0;
         }
 
         self.chomp();
