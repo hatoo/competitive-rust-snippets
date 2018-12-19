@@ -1,5 +1,5 @@
-use std::collections::{BTreeSet, VecDeque};
 use std::cmp::min;
+use std::collections::{BTreeSet, VecDeque};
 
 #[snippet = "Flow"]
 #[allow(dead_code)]
@@ -158,10 +158,18 @@ impl Flow {
 #[snippet = "bipartite_matching"]
 #[allow(dead_code)]
 pub fn bipartite_matching(g: &[Vec<usize>]) -> usize {
-    fn dfs(v: usize, g: &[Vec<usize>], mat: &mut [Option<usize>], used: &mut [bool]) -> bool {
-        used[v] = true;
+    fn dfs(
+        v: usize,
+        g: &[Vec<usize>],
+        mat: &mut [Option<usize>],
+        used: &mut [usize],
+        id: usize,
+    ) -> bool {
+        used[v] = id;
         for &u in &g[v] {
-            if mat[u].is_none() || !used[mat[u].unwrap()] && dfs(mat[u].unwrap(), g, mat, used) {
+            if mat[u].is_none()
+                || used[mat[u].unwrap()] != id && dfs(mat[u].unwrap(), g, mat, used, id)
+            {
                 mat[v] = Some(u);
                 mat[u] = Some(v);
                 return true;
@@ -173,10 +181,10 @@ pub fn bipartite_matching(g: &[Vec<usize>]) -> usize {
 
     let mut res = 0;
     let mut mat = vec![None; g.len()];
+    let mut used = vec![0; g.len()];
     for v in 0..g.len() {
         if mat[v].is_none() {
-            let mut used = vec![false; g.len()];
-            if dfs(v, g, &mut mat, &mut used) {
+            if dfs(v, g, &mut mat, &mut used, v + 1) {
                 res += 1;
             }
         }
