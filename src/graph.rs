@@ -182,7 +182,8 @@ impl HeavyLightDecomposition {
             let res = tree.childs[i]
                 .iter()
                 .map(|&to| size(to, tree, memo))
-                .sum::<usize>() + 1;
+                .sum::<usize>()
+                + 1;
             memo[i] = Some(res);
             res
         }

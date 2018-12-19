@@ -1,5 +1,5 @@
-use std::cmp::{max, min};
 use std;
+use std::cmp::{max, min};
 // Too complicated
 
 #[snippet = "Bucket"]
@@ -76,7 +76,8 @@ where
     pub fn sum(&mut self, l: usize, r: usize) -> Option<I::R> {
         let (left, mid, right) = self.ranges(l, r);
 
-        let mut iter = left.chain(right)
+        let mut iter = left
+            .chain(right)
             .map(|i| I::elem_to_result(&self.buf[i], &self.parent[i / self.sqrt]))
             .chain(mid.map(|i| I::parent_to_result(&self.parent[i])));
 
