@@ -3,8 +3,8 @@ use std::cmp::Ordering;
 #[snippet = "BinarySearch"]
 /// Equivalent to std::lowerbound and std::upperbound in c++
 pub trait BinarySearch<T> {
-    fn lower_bound(&self, &T) -> usize;
-    fn upper_bound(&self, &T) -> usize;
+    fn lower_bound(&self, x: &T) -> usize;
+    fn upper_bound(&self, x: &T) -> usize;
 }
 
 #[snippet = "BinarySearch"]
