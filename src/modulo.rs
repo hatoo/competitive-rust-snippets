@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 #[snippet("mod")]
 #[allow(dead_code)]
 pub fn gcd(a: u64, b: u64) -> u64 {

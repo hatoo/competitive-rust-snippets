@@ -1,3 +1,4 @@
+#![feature(custom_inner_attributes)]
 #![feature(test)]
 
 extern crate test;

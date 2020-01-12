@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 use std::collections::{HashMap, HashSet};
 #[snippet("FnvHash")]
 use std::default::Default;

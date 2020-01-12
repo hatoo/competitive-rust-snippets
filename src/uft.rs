@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 #[snippet("UFT")]
 #[allow(dead_code)]
 /// Union Find Tree

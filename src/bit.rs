@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 #[snippet("BIT")]
 #[allow(dead_code)]
 /// Generic Binary Indexed Tree

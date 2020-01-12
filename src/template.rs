@@ -1,4 +1,6 @@
-#![snippet = "template"]
+#![snippet("template")]
+
+use cargo_snippet::snippet;
 
 /// https://github.com/hatoo/competitive-rust-snippets
 

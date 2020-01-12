@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 #[snippet("BIT-usize")]
 #[allow(dead_code)]
 /// Binary Indexed Tree of usize

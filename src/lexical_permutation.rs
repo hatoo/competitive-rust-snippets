@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 /// Ported from [bluss/permutohedron](https://github.com/bluss/permutohedron)
 #[snippet("LexicalPermutation")]
 pub trait LexicalPermutation {

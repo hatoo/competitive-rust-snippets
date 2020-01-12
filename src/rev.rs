@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 /// Same of std::cmp::Reverse.
 /// It is useful since Atcoder's rustc is 1.15 which is not support std::cmp::Reverse.
 use std::cmp::Ordering;

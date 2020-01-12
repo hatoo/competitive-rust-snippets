@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 #[snippet("Manacher")]
 #[allow(dead_code)]
 /// Manacher's algorithm

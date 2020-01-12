@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 #[snippet("strongly_connected_component")]
 #[allow(dead_code)]
 pub fn strongly_connected_component(g: &[Vec<usize>]) -> Vec<usize> {

@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 use std::cmp::Ordering;
 
 use binary_search::BinarySearch;

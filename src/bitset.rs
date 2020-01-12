@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 use std;
 
 #[snippet("BitSet")]
@@ -5,8 +6,8 @@ const TRUE: &'static bool = &true;
 #[snippet("BitSet")]
 const FALSE: &'static bool = &false;
 
-#[derive(Clone, Debug)]
 #[snippet("BitSet")]
+#[derive(Clone, Debug)]
 /// Efficient bool collection
 pub struct BitSet {
     buf: Vec<u64>,

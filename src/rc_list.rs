@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 #[snippet("RcList")]
 use std::rc::Rc;
 

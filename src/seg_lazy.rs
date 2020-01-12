@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 use std;
 
 #[snippet("SEG_LAZY")]

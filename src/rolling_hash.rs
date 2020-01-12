@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 #[snippet("RollingHash")]
 #[allow(dead_code)]
 /// Rolling hash algorithm

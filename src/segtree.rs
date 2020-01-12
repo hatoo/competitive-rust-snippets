@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 #[snippet("SEG")]
 #[allow(dead_code)]
 pub trait Monoid {

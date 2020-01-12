@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 #[snippet]
 #[allow(dead_code)]
 /// v[n][k] = nCk / 2^n

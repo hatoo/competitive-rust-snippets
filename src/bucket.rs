@@ -1,3 +1,4 @@
+use cargo_snippet::snippet;
 use std;
 use std::cmp::{max, min};
 // Too complicated
