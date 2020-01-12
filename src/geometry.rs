@@ -72,7 +72,7 @@ impl std::ops::Div<f64> for Vector2D {
     }
 }
 
-use total::Total;
+use crate::total::Total;
 
 #[snippet("convex_hull")]
 #[allow(dead_code)]

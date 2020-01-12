@@ -2,8 +2,9 @@
 name = "competitive-rust-snippets"
 version = "0.1.0"
 authors = ["hatoo <hato2000@gmail.com>"]
+edition = "2018"
 
 [dependencies]
-cargo-snippet = "0.2"
+cargo-snippet = "0.4"
 rand = "0.4"
 

@@ -152,7 +152,7 @@ impl BucketImpl for RangeAddQueryMax {
 #[test]
 fn test_range_add_query_max() {
     use rand::{Rng, SeedableRng, StdRng};
-    use util::random_range;
+    use crate::util::random_range;
 
     // Test against naive vector
     let size = 1000;
