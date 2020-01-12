@@ -1,11 +1,12 @@
-#[snippet = "RollingHash"]
+use cargo_snippet::snippet;
+#[snippet("RollingHash")]
 #[allow(dead_code)]
 /// Rolling hash algorithm
 pub struct RollingHash {
     hash_pow_list: Vec<(u64, Vec<(u64, u64)>)>,
 }
 
-#[snippet = "RollingHash"]
+#[snippet("RollingHash")]
 #[allow(dead_code)]
 impl RollingHash {
     pub fn new(s: &[u64]) -> RollingHash {

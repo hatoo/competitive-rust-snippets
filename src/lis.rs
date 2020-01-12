@@ -1,8 +1,9 @@
+use cargo_snippet::snippet;
 use std::cmp::Ordering;
 
-use binary_search::BinarySearch;
+use crate::binary_search::BinarySearch;
 
-#[snippet = "lis"]
+#[snippet("lis")]
 #[snippet(include = "BinarySearch")]
 #[derive(PartialEq, Eq, Clone, Debug)]
 enum Inf<T> {
@@ -10,7 +11,7 @@ enum Inf<T> {
     Inf,
 }
 
-#[snippet = "lis"]
+#[snippet("lis")]
 impl<T: Ord> Inf<T> {
     #[allow(dead_code)]
     fn val(self) -> Option<T> {
@@ -21,7 +22,7 @@ impl<T: Ord> Inf<T> {
     }
 }
 
-#[snippet = "lis"]
+#[snippet("lis")]
 impl<T: PartialOrd> PartialOrd for Inf<T> {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         match (self, other) {
@@ -33,7 +34,7 @@ impl<T: PartialOrd> PartialOrd for Inf<T> {
     }
 }
 
-#[snippet = "lis"]
+#[snippet("lis")]
 impl<T: Ord> Ord for Inf<T> {
     fn cmp(&self, other: &Self) -> Ordering {
         match (self, other) {
@@ -45,7 +46,7 @@ impl<T: Ord> Ord for Inf<T> {
     }
 }
 
-#[snippet = "lis"]
+#[snippet("lis")]
 #[allow(dead_code)]
 /// Calculate length of Longest Increasing Subsequence. O(N log N)
 pub fn lis<T: Ord>(seq: &[T]) -> usize {

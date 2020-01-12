@@ -1,11 +1,12 @@
+use cargo_snippet::snippet;
 use std;
 
-#[snippet = "Vector2D"]
+#[snippet("Vector2D")]
 #[derive(Debug, Clone, Copy, PartialEq)]
 #[allow(dead_code)]
 pub struct Vector2D(f64, f64);
 
-#[snippet = "Vector2D"]
+#[snippet("Vector2D")]
 impl Vector2D {
     pub fn add(a: f64, b: f64) -> f64 {
         let c = a + b;
@@ -35,7 +36,7 @@ impl Vector2D {
     }
 }
 
-#[snippet = "Vector2D"]
+#[snippet("Vector2D")]
 impl std::ops::Add for Vector2D {
     type Output = Vector2D;
 
@@ -44,7 +45,7 @@ impl std::ops::Add for Vector2D {
     }
 }
 
-#[snippet = "Vector2D"]
+#[snippet("Vector2D")]
 impl std::ops::Sub for Vector2D {
     type Output = Vector2D;
 
@@ -53,7 +54,7 @@ impl std::ops::Sub for Vector2D {
     }
 }
 
-#[snippet = "Vector2D"]
+#[snippet("Vector2D")]
 impl std::ops::Mul<f64> for Vector2D {
     type Output = Vector2D;
 
@@ -62,7 +63,7 @@ impl std::ops::Mul<f64> for Vector2D {
     }
 }
 
-#[snippet = "Vector2D"]
+#[snippet("Vector2D")]
 impl std::ops::Div<f64> for Vector2D {
     type Output = Vector2D;
 
@@ -71,9 +72,9 @@ impl std::ops::Div<f64> for Vector2D {
     }
 }
 
-use total::Total;
+use crate::total::Total;
 
-#[snippet = "convex_hull"]
+#[snippet("convex_hull")]
 #[allow(dead_code)]
 fn convex_hull(vs: &[Vector2D]) -> Vec<usize> {
     let mut idx: Vec<usize> = (0..vs.len()).collect();
@@ -108,7 +109,7 @@ fn convex_hull(vs: &[Vector2D]) -> Vec<usize> {
     res
 }
 
-#[snippet = "closest_pair"]
+#[snippet("closest_pair")]
 pub fn closest_pair(ps: &[(f64, f64)]) -> ((f64, f64), (f64, f64)) {
     fn d(p1: (f64, f64), p2: (f64, f64)) -> f64 {
         ((p1.0 - p2.0).powi(2) + (p1.1 - p2.1).powi(2)).sqrt()
@@ -188,7 +189,7 @@ pub fn closest_pair(ps: &[(f64, f64)]) -> ((f64, f64), (f64, f64)) {
 }
 
 /// Is line a-b and line c-d intersected ?
-#[snippet = "is_intersected"]
+#[snippet("is_intersected")]
 pub fn is_intersected(a: Vector2D, b: Vector2D, c: Vector2D, d: Vector2D) -> bool {
     let ta = (c.0 - d.0) * (a.1 - c.1) + (c.1 - d.1) * (c.0 - a.0);
     let tb = (c.0 - d.0) * (b.1 - c.1) + (c.1 - d.1) * (c.0 - b.0);

@@ -1,4 +1,5 @@
-#[snippet = "SEG"]
+use cargo_snippet::snippet;
+#[snippet("SEG")]
 #[allow(dead_code)]
 pub trait Monoid {
     type T: Clone;
@@ -6,7 +7,7 @@ pub trait Monoid {
     fn op(a: &Self::T, b: &Self::T) -> Self::T;
 }
 
-#[snippet = "SEG"]
+#[snippet("SEG")]
 #[allow(dead_code)]
 /// Segment Tree
 pub struct SEG<M: Monoid> {
@@ -14,7 +15,7 @@ pub struct SEG<M: Monoid> {
     buf: Vec<M::T>,
 }
 
-#[snippet = "SEG"]
+#[snippet("SEG")]
 impl<M: Monoid> SEG<M> {
     #[allow(dead_code)]
     pub fn new(n: usize) -> SEG<M> {
@@ -76,10 +77,10 @@ impl<M: Monoid> SEG<M> {
     }
 }
 
-#[snippet = "Monoid-SUM"]
+#[snippet("Monoid-SUM")]
 #[allow(dead_code)]
 struct SUM;
-#[snippet = "Monoid-SUM"]
+#[snippet("Monoid-SUM")]
 impl Monoid for SUM {
     type T = u64;
     fn id() -> Self::T {
@@ -93,7 +94,7 @@ impl Monoid for SUM {
 #[test]
 fn test_segtree_vs_cumulative_sum() {
     use rand::{Rng, SeedableRng, StdRng};
-    use util::random_range;
+    use crate::util::random_range;
 
     let size = 1000;
     let mut cum_sum = vec![0; size + 1];
@@ -142,7 +143,7 @@ impl Monoid for APPEND {
 #[test]
 fn test_segtree_non_commutative() {
     use rand::{Rng, SeedableRng, StdRng};
-    use util;
+    use crate::util;
     let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
 
     let size = 100;
@@ -196,7 +197,7 @@ fn bench_segtree_update(b: &mut Bencher) {
 #[bench]
 fn bench_segtree_query(b: &mut Bencher) {
     use rand::{Rng, SeedableRng, StdRng};
-    use util;
+    use crate::util;
 
     let size = 10000;
     let mut seg: SEG<SUM> = SEG::new(size);

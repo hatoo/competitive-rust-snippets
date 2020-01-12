@@ -1,9 +1,7 @@
 #![feature(custom_inner_attributes)]
-#![feature(plugin)]
+#![feature(proc_macro_hygiene)]
 #![feature(test)]
-#![plugin(cargo_snippet)]
 
-extern crate rand;
 extern crate test;
 
 pub mod binary_search;

@@ -1,4 +1,5 @@
-#[snippet = "UFT"]
+use cargo_snippet::snippet;
+#[snippet("UFT")]
 #[allow(dead_code)]
 /// Union Find Tree
 pub struct UFT {
@@ -6,7 +7,7 @@ pub struct UFT {
     pub rank: Vec<usize>,
 }
 
-#[snippet = "UFT"]
+#[snippet("UFT")]
 impl UFT {
     #[allow(dead_code)]
     pub fn new(n: usize) -> Self {
@@ -49,7 +50,7 @@ impl UFT {
 
 use std;
 
-#[snippet = "WeightedUFT"]
+#[snippet("WeightedUFT")]
 /// https://qiita.com/drken/items/cce6fc5c579051e64fab
 pub struct WeightedUFT {
     pub par: Vec<usize>,
@@ -57,7 +58,7 @@ pub struct WeightedUFT {
     pub diff_weight: Vec<i64>,
 }
 
-#[snippet = "WeightedUFT"]
+#[snippet("WeightedUFT")]
 impl WeightedUFT {
     pub fn new(size: usize) -> WeightedUFT {
         WeightedUFT {

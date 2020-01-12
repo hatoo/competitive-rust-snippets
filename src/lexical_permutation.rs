@@ -1,5 +1,6 @@
+use cargo_snippet::snippet;
 /// Ported from [bluss/permutohedron](https://github.com/bluss/permutohedron)
-#[snippet = "LexicalPermutation"]
+#[snippet("LexicalPermutation")]
 pub trait LexicalPermutation {
     /// Return \`true\` if the slice was permuted, \`false\` if it is already
     /// at the last ordered permutation.
@@ -9,7 +10,7 @@ pub trait LexicalPermutation {
     fn prev_permutation(&mut self) -> bool;
 }
 
-#[snippet = "LexicalPermutation"]
+#[snippet("LexicalPermutation")]
 impl<T> LexicalPermutation for [T]
 where
     T: Ord,

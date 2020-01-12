@@ -1,4 +1,4 @@
-#![snippet = "template"]
+#![cargo_snippet::snippet("template")]
 
 /// https://github.com/hatoo/competitive-rust-snippets
 

@@ -1,4 +1,5 @@
-#[snippet = "BIT"]
+use cargo_snippet::snippet;
+#[snippet("BIT")]
 #[allow(dead_code)]
 /// Generic Binary Indexed Tree
 pub struct BIT<T: Clone, F: Fn(&mut T, &T) -> ()> {
@@ -7,7 +8,7 @@ pub struct BIT<T: Clone, F: Fn(&mut T, &T) -> ()> {
     f: F,
 }
 
-#[snippet = "BIT"]
+#[snippet("BIT")]
 impl<T: Clone, F: Fn(&mut T, &T) -> ()> BIT<T, F> {
     #[allow(dead_code)]
     pub fn new(n: usize, zero: &T, f: F) -> BIT<T, F> {
