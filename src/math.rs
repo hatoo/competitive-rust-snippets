@@ -19,7 +19,7 @@ fn nck_prob(n: usize) -> Vec<Vec<f64>> {
     res
 }
 
-#[snippet = "partition_dp"]
+#[snippet("partition_dp")]
 #[allow(dead_code)]
 /// dp[i][j] = j th partition number of i
 pub fn partition_dp(n: usize, m: usize, p: u64) -> Vec<Vec<u64>> {
@@ -39,7 +39,7 @@ pub fn partition_dp(n: usize, m: usize, p: u64) -> Vec<Vec<u64>> {
     dp
 }
 
-#[snippet = "convex_hull_check"]
+#[snippet("convex_hull_check")]
 #[allow(dead_code)]
 /// A check function for convex hull trick
 pub fn convex_hull_check((a1, b1): (i64, i64), (a2, b2): (i64, i64), (a3, b3): (i64, i64)) -> bool {
@@ -48,7 +48,7 @@ pub fn convex_hull_check((a1, b1): (i64, i64), (a2, b2): (i64, i64), (a3, b3): (
         >= (b2 as f64 - b1 as f64) * (a3 as f64 - a2 as f64)
 }
 
-#[snippet = "factor_table"]
+#[snippet("factor_table")]
 #[allow(dead_code)]
 pub fn factor_table(max_n: usize) -> Vec<usize> {
     let mut res = vec![0; max_n + 1];
@@ -66,14 +66,14 @@ pub fn factor_table(max_n: usize) -> Vec<usize> {
     res
 }
 
-#[snippet = "XorShift"]
+#[snippet("XorShift")]
 #[derive(Debug)]
 #[allow(dead_code)]
 pub struct Xorshift {
     seed: u64,
 }
 
-#[snippet = "XorShift"]
+#[snippet("XorShift")]
 impl Xorshift {
     #[allow(dead_code)]
     pub fn new() -> Xorshift {

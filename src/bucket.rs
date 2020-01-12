@@ -2,7 +2,7 @@ use std;
 use std::cmp::{max, min};
 // Too complicated
 
-#[snippet = "Bucket"]
+#[snippet("Bucket")]
 pub struct Bucket<I: BucketImpl> {
     buf: Vec<I::Elem>,
     parent: Vec<I::Parent>,
@@ -10,7 +10,7 @@ pub struct Bucket<I: BucketImpl> {
     phantom_i: std::marker::PhantomData<I>,
 }
 
-#[snippet = "Bucket"]
+#[snippet("Bucket")]
 impl<I: BucketImpl> Bucket<I>
 where
     I::Parent: Clone,
@@ -92,7 +92,7 @@ where
     }
 }
 
-#[snippet = "Bucket"]
+#[snippet("Bucket")]
 pub trait BucketImpl {
     type Elem;
     type Parent;
@@ -109,11 +109,11 @@ pub trait BucketImpl {
     fn reduce_result(a: &mut Self::R, b: &Self::R);
 }
 
-#[snippet = "Bucket-RangeAddQueryMax"]
+#[snippet("Bucket-RangeAddQueryMax")]
 #[allow(dead_code)]
 struct RangeAddQueryMax();
 
-#[snippet = "Bucket-RangeAddQueryMax"]
+#[snippet("Bucket-RangeAddQueryMax")]
 impl BucketImpl for RangeAddQueryMax {
     type Elem = u64;
     // (max, delta)

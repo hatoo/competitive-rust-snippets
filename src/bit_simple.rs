@@ -1,11 +1,11 @@
-#[snippet = "BIT-usize"]
+#[snippet("BIT-usize")]
 #[allow(dead_code)]
 /// Binary Indexed Tree of usize
 pub struct BIT {
     buf: Vec<usize>,
 }
 
-#[snippet = "BIT-usize"]
+#[snippet("BIT-usize")]
 #[allow(dead_code)]
 impl BIT {
     pub fn new(n: usize) -> BIT {

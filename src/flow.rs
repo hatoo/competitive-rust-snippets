@@ -1,7 +1,7 @@
 use std::cmp::min;
 use std::collections::{BTreeSet, VecDeque};
 
-#[snippet = "Flow"]
+#[snippet("Flow")]
 #[allow(dead_code)]
 /// Struct for maximum flow problem
 pub struct Flow {
@@ -9,7 +9,7 @@ pub struct Flow {
     edges: Vec<Vec<(usize, usize, usize)>>,
 }
 
-#[snippet = "Flow"]
+#[snippet("Flow")]
 impl Flow {
     #[allow(dead_code)]
     pub fn new(max_size: usize) -> Flow {
@@ -155,7 +155,7 @@ impl Flow {
     }
 }
 
-#[snippet = "bipartite_matching"]
+#[snippet("bipartite_matching")]
 #[allow(dead_code)]
 pub fn bipartite_matching(g: &[Vec<usize>]) -> usize {
     fn dfs(

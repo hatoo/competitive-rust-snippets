@@ -1,4 +1,4 @@
-#[snippet = "strongly_connected_component"]
+#[snippet("strongly_connected_component")]
 #[allow(dead_code)]
 pub fn strongly_connected_component(g: &[Vec<usize>]) -> Vec<usize> {
     fn dfs(v: usize, g: &[Vec<usize>], vs: &mut Vec<usize>, used: &mut [bool]) {
@@ -51,14 +51,14 @@ pub fn strongly_connected_component(g: &[Vec<usize>]) -> Vec<usize> {
     cmp
 }
 
-#[snippet = "LCA"]
+#[snippet("LCA")]
 #[allow(dead_code)]
 pub struct LCA {
     pub depth: Vec<usize>,
     pub parent: Vec<Vec<Option<usize>>>,
 }
 
-#[snippet = "LCA"]
+#[snippet("LCA")]
 #[allow(dead_code)]
 impl LCA {
     pub fn new(g: &[Vec<usize>]) -> LCA {
@@ -128,16 +128,16 @@ impl LCA {
     }
 }
 
-#[snippet = "Tree"]
-#[snippet = "HeavyLightDecomposition"]
+#[snippet("Tree")]
+#[snippet("HeavyLightDecomposition")]
 pub struct Tree {
     pub root: usize,
     pub parent: Vec<Option<usize>>,
     pub childs: Vec<Vec<usize>>,
 }
 
-#[snippet = "Tree"]
-#[snippet = "HeavyLightDecomposition"]
+#[snippet("Tree")]
+#[snippet("HeavyLightDecomposition")]
 impl Tree {
     pub fn from_neighbor_list(n: usize, root: usize, g: &[Vec<usize>]) -> Tree {
         let mut parent = vec![None; n];
@@ -164,14 +164,14 @@ impl Tree {
     }
 }
 
-#[snippet = "HeavyLightDecomposition"]
+#[snippet("HeavyLightDecomposition")]
 pub struct HeavyLightDecomposition {
     pub ids: Vec<(usize, usize)>,
     pub parents: Vec<Option<(usize, usize)>>,
     pub parts: Vec<Vec<usize>>,
 }
 
-#[snippet = "HeavyLightDecomposition"]
+#[snippet("HeavyLightDecomposition")]
 impl HeavyLightDecomposition {
     pub fn new(tree: &Tree) -> HeavyLightDecomposition {
         fn size(i: usize, tree: &Tree, memo: &mut [Option<usize>]) -> usize {
@@ -235,7 +235,7 @@ impl HeavyLightDecomposition {
 
 use std::cmp::min;
 
-#[snippet = "articulation_points"]
+#[snippet("articulation_points")]
 pub fn articulation_points(g: &[Vec<usize>]) -> Vec<usize> {
     fn dfs(
         i: usize,
@@ -298,7 +298,7 @@ pub fn articulation_points(g: &[Vec<usize>]) -> Vec<usize> {
     res
 }
 
-#[snippet = "bridges"]
+#[snippet("bridges")]
 pub fn bridges(g: &[Vec<usize>]) -> Vec<(usize, usize)> {
     fn dfs(
         i: usize,

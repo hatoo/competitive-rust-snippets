@@ -1,7 +1,7 @@
-#[snippet = "RcList"]
+#[snippet("RcList")]
 use std::rc::Rc;
 
-#[snippet = "RcList"]
+#[snippet("RcList")]
 #[derive(Debug)]
 struct RcListInner<T> {
     parent: RcList<T>,
@@ -9,11 +9,11 @@ struct RcListInner<T> {
 }
 
 /// O(1) clone, O(1) push
-#[snippet = "RcList"]
+#[snippet("RcList")]
 #[derive(Clone, Debug)]
 struct RcList<T>(Option<Rc<RcListInner<T>>>);
 
-#[snippet = "RcList"]
+#[snippet("RcList")]
 impl<T: Clone> RcList<T> {
     #[allow(dead_code)]
     fn new() -> Self {

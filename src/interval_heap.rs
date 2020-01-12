@@ -1,13 +1,13 @@
 use std;
 
 /// IntervalHeap
-#[snippet = "IntervalHeap"]
+#[snippet("IntervalHeap")]
 #[derive(Clone, Debug)]
 struct IntervalHeap<T: Ord + Eq> {
     data: Vec<T>,
 }
 
-#[snippet = "IntervalHeap"]
+#[snippet("IntervalHeap")]
 impl<T: Ord + Eq> IntervalHeap<T> {
     #[allow(dead_code)]
     fn new() -> IntervalHeap<T> {
@@ -198,14 +198,14 @@ impl<T: Ord + Eq> IntervalHeap<T> {
     }
 }
 
-#[snippet = "IntervalHeap"]
+#[snippet("IntervalHeap")]
 #[derive(Clone, Debug)]
 struct LimitedIntervalHeap<T: Ord + Eq> {
     heap: IntervalHeap<T>,
     limit: usize,
 }
 
-#[snippet = "IntervalHeap"]
+#[snippet("IntervalHeap")]
 impl<T: Ord + Eq> LimitedIntervalHeap<T> {
     #[allow(dead_code)]
     fn new(limit: usize) -> LimitedIntervalHeap<T> {

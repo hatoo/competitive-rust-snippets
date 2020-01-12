@@ -1,6 +1,6 @@
 use std;
 
-#[snippet = "SEG_LAZY"]
+#[snippet("SEG_LAZY")]
 #[allow(dead_code)]
 /// Lazy Segment Tree
 pub struct SEG<T: SEGimpl> {
@@ -10,7 +10,7 @@ pub struct SEG<T: SEGimpl> {
     phantom: std::marker::PhantomData<T>,
 }
 
-#[snippet = "SEG_LAZY"]
+#[snippet("SEG_LAZY")]
 impl<T: SEGimpl> SEG<T> {
     #[allow(dead_code)]
     pub fn new(n: usize, zero: T::Elem) -> SEG<T> {
@@ -113,7 +113,7 @@ impl<T: SEGimpl> SEG<T> {
     }
 }
 
-#[snippet = "SEG_LAZY"]
+#[snippet("SEG_LAZY")]
 pub trait SEGimpl {
     type Elem: Clone;
     type A;
@@ -126,9 +126,9 @@ pub trait SEGimpl {
 }
 
 #[allow(dead_code)]
-#[snippet = "RangeAddSum"]
+#[snippet("RangeAddSum")]
 struct RangeAddSum();
-#[snippet = "RangeAddSum"]
+#[snippet("RangeAddSum")]
 impl SEGimpl for RangeAddSum {
     type Elem = (u64, u64);
     type A = u64;

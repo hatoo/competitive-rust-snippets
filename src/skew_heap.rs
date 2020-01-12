@@ -4,7 +4,7 @@
 
 use std;
 
-#[snippet = "SkewHeap"]
+#[snippet("SkewHeap")]
 #[derive(Debug, Clone)]
 struct SkewHeapNode<T: Ord> {
     v: T,
@@ -12,11 +12,11 @@ struct SkewHeapNode<T: Ord> {
     r: SkewHeap<T>,
     length: usize,
 }
-#[snippet = "SkewHeap"]
+#[snippet("SkewHeap")]
 #[derive(Debug, Clone)]
 pub struct SkewHeap<T: Ord>(Option<Box<SkewHeapNode<T>>>);
 
-#[snippet = "SkewHeap"]
+#[snippet("SkewHeap")]
 impl<T: Ord> SkewHeapNode<T> {
     fn swap(&mut self) {
         let &mut SkewHeapNode {
@@ -35,7 +35,7 @@ impl<T: Ord> SkewHeapNode<T> {
     }
 }
 
-#[snippet = "SkewHeap"]
+#[snippet("SkewHeap")]
 impl<T: Ord> SkewHeap<T> {
     pub fn new() -> SkewHeap<T> {
         SkewHeap(None)

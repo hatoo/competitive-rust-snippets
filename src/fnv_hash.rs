@@ -1,18 +1,18 @@
 use std::collections::{HashMap, HashSet};
-#[snippet = "FnvHash"]
+#[snippet("FnvHash")]
 use std::default::Default;
-#[snippet = "FnvHash"]
+#[snippet("FnvHash")]
 use std::hash::{BuildHasherDefault, Hasher};
 
 /// An implementation of the Fowler–Noll–Vo hash function.
 ///
 /// See the [crate documentation](index.html) for more details.
 /// Ported from [servo/rust-fnv](https://raw.githubusercontent.com/servo/rust-fnv/master/lib.rs)
-#[snippet = "FnvHash"]
+#[snippet("FnvHash")]
 #[allow(missing_copy_implementations)]
 pub struct FnvHasher(u64);
 
-#[snippet = "FnvHash"]
+#[snippet("FnvHash")]
 impl Default for FnvHasher {
     #[inline]
     fn default() -> FnvHasher {
@@ -20,7 +20,7 @@ impl Default for FnvHasher {
     }
 }
 
-#[snippet = "FnvHash"]
+#[snippet("FnvHash")]
 impl FnvHasher {
     /// Create an FNV hasher starting with a state corresponding
     /// to the hash `key`.
@@ -30,7 +30,7 @@ impl FnvHasher {
     }
 }
 
-#[snippet = "FnvHash"]
+#[snippet("FnvHash")]
 impl Hasher for FnvHasher {
     #[inline]
     fn finish(&self) -> u64 {
@@ -51,15 +51,15 @@ impl Hasher for FnvHasher {
 }
 
 /// A builder for default FNV hashers.
-#[snippet = "FnvHash"]
+#[snippet("FnvHash")]
 pub type FnvBuildHasher = BuildHasherDefault<FnvHasher>;
 
 /// A `HashMap` using a default FNV hasher.
-#[snippet = "FnvHash"]
+#[snippet("FnvHash")]
 pub type FnvHashMap<K, V> = HashMap<K, V, FnvBuildHasher>;
 
 /// A `HashSet` using a default FNV hasher.
-#[snippet = "FnvHash"]
+#[snippet("FnvHash")]
 pub type FnvHashSet<T> = HashSet<T, FnvBuildHasher>;
 
 #[cfg(test)]

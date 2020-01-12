@@ -1,4 +1,4 @@
-#[snippet = "SEG"]
+#[snippet("SEG")]
 #[allow(dead_code)]
 pub trait Monoid {
     type T: Clone;
@@ -6,7 +6,7 @@ pub trait Monoid {
     fn op(a: &Self::T, b: &Self::T) -> Self::T;
 }
 
-#[snippet = "SEG"]
+#[snippet("SEG")]
 #[allow(dead_code)]
 /// Segment Tree
 pub struct SEG<M: Monoid> {
@@ -14,7 +14,7 @@ pub struct SEG<M: Monoid> {
     buf: Vec<M::T>,
 }
 
-#[snippet = "SEG"]
+#[snippet("SEG")]
 impl<M: Monoid> SEG<M> {
     #[allow(dead_code)]
     pub fn new(n: usize) -> SEG<M> {
@@ -76,10 +76,10 @@ impl<M: Monoid> SEG<M> {
     }
 }
 
-#[snippet = "Monoid-SUM"]
+#[snippet("Monoid-SUM")]
 #[allow(dead_code)]
 struct SUM;
-#[snippet = "Monoid-SUM"]
+#[snippet("Monoid-SUM")]
 impl Monoid for SUM {
     type T = u64;
     fn id() -> Self::T {
