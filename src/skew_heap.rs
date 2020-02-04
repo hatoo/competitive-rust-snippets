@@ -2,8 +2,8 @@
 //!
 //! std::collections::BinaryHeap is always faster in my experience.
 
-use std;
 use cargo_snippet::snippet;
+use std;
 
 #[snippet("SkewHeap")]
 #[derive(Debug, Clone)]
