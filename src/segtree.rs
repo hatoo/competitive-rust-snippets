@@ -53,6 +53,25 @@ impl<M: Monoid> SEG<M> {
     }
 
     #[allow(dead_code)]
+    pub fn query_range<R: std::ops::RangeBounds<usize>>(&self, range: R) -> M::T {
+        let l = match range.start_bound() {
+            std::ops::Bound::Excluded(&x) => {
+                assert!(x > 0);
+                x - 1
+            }
+            std::ops::Bound::Included(&x) => x,
+            std::ops::Bound::Unbounded => 0,
+        };
+        let r = match range.end_bound() {
+            std::ops::Bound::Excluded(&x) => x,
+            std::ops::Bound::Included(&x) => (x + 1),
+            std::ops::Bound::Unbounded => self.n,
+        };
+
+        self.query(l, r)
+    }
+
+    #[allow(dead_code)]
     pub fn query(&self, l: usize, r: usize) -> M::T {
         let mut vl = M::id();
         let mut vr = M::id();
@@ -93,8 +112,8 @@ impl Monoid for SUM {
 
 #[test]
 fn test_segtree_vs_cumulative_sum() {
-    use rand::{Rng, SeedableRng, StdRng};
     use crate::util::random_range;
+    use rand::{Rng, SeedableRng, StdRng};
 
     let size = 1000;
     let mut cum_sum = vec![0; size + 1];
@@ -116,7 +135,7 @@ fn test_segtree_vs_cumulative_sum() {
 
     for _ in 0..1000 {
         let r = random_range(&mut rng, 0, size);
-        assert_eq!(seg.query(r.start, r.end), cum_sum[r.end] - cum_sum[r.start]);
+        assert_eq!(seg.query_range(r.clone()), cum_sum[r.end] - cum_sum[r.start]);
     }
 }
 
@@ -142,8 +161,8 @@ impl Monoid for APPEND {
 
 #[test]
 fn test_segtree_non_commutative() {
-    use rand::{Rng, SeedableRng, StdRng};
     use crate::util;
+    use rand::{Rng, SeedableRng, StdRng};
     let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
 
     let size = 100;
@@ -196,8 +215,8 @@ fn bench_segtree_update(b: &mut Bencher) {
 
 #[bench]
 fn bench_segtree_query(b: &mut Bencher) {
-    use rand::{Rng, SeedableRng, StdRng};
     use crate::util;
+    use rand::{Rng, SeedableRng, StdRng};
 
     let size = 10000;
     let mut seg: SEG<SUM> = SEG::new(size);
