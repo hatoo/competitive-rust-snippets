@@ -53,6 +53,25 @@ impl<M: Monoid> SEG<M> {
     }
 
     #[allow(dead_code)]
+    pub fn query_range<R: std::ops::RangeBounds<usize>>(&self, range: R) -> M::T {
+        let l = match range.start_bound() {
+            std::ops::Bound::Excluded(&x) => {
+                assert!(x > 0);
+                x - 1
+            }
+            std::ops::Bound::Included(&x) => x,
+            std::ops::Bound::Unbounded => 0,
+        };
+        let r = match range.end_bound() {
+            std::ops::Bound::Excluded(&x) => x,
+            std::ops::Bound::Included(&x) => (x + 1),
+            std::ops::Bound::Unbounded => self.n,
+        };
+
+        self.query(l, r)
+    }
+
+    #[allow(dead_code)]
     pub fn query(&self, l: usize, r: usize) -> M::T {
         let mut vl = M::id();
         let mut vr = M::id();
@@ -116,7 +135,7 @@ fn test_segtree_vs_cumulative_sum() {
 
     for _ in 0..1000 {
         let r = random_range(&mut rng, 0, size);
-        assert_eq!(seg.query(r.start, r.end), cum_sum[r.end] - cum_sum[r.start]);
+        assert_eq!(seg.query_range(r.clone()), cum_sum[r.end] - cum_sum[r.start]);
     }
 }
 
