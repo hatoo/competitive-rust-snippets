@@ -6,7 +6,6 @@ extern crate test;
 
 pub mod binary_search;
 pub mod bit;
-pub mod bit_simple;
 pub mod bitset;
 pub mod bucket;
 pub mod flow;
