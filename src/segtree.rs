@@ -15,8 +15,8 @@ impl<M: Monoid> SEG<M> {
     #[allow(dead_code)]
     pub fn new(n: usize) -> SEG<M> {
         SEG {
-            n: n,
-            buf: vec![M::id().clone(); 2 * n],
+            n,
+            buf: vec![M::id(); 2 * n],
         }
     }
 

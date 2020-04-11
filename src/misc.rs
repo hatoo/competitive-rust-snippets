@@ -1,5 +1,4 @@
 use cargo_snippet::snippet;
-use std;
 
 #[snippet("M")]
 #[allow(dead_code)]

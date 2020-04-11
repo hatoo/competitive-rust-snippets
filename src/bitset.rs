@@ -1,10 +1,9 @@
 use cargo_snippet::snippet;
-use std;
 
 #[snippet("BitSet")]
-const TRUE: &'static bool = &true;
+const TRUE: &bool = &true;
 #[snippet("BitSet")]
-const FALSE: &'static bool = &false;
+const FALSE: &bool = &false;
 
 #[snippet("BitSet")]
 #[derive(Clone, Debug)]
@@ -20,7 +19,7 @@ impl BitSet {
     pub fn new(size: usize) -> BitSet {
         BitSet {
             buf: vec![0; (size + 63) / 64],
-            size: size,
+            size,
         }
     }
 

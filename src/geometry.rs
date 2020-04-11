@@ -1,5 +1,4 @@
 use cargo_snippet::snippet;
-use std;
 
 #[snippet("Vector2D")]
 #[derive(Debug, Clone, Copy, PartialEq)]

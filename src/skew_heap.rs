@@ -3,7 +3,6 @@
 //! std::collections::BinaryHeap is always faster in my experience.
 
 use cargo_snippet::snippet;
-use std;
 
 #[snippet("SkewHeap")]
 #[derive(Debug, Clone)]
@@ -37,11 +36,14 @@ impl<T: Ord> SkewHeapNode<T> {
 }
 
 #[snippet("SkewHeap")]
-impl<T: Ord> SkewHeap<T> {
-    pub fn new() -> SkewHeap<T> {
+impl<T: Ord> Default for SkewHeap<T> {
+    fn default() -> Self {
         SkewHeap(None)
     }
+}
 
+#[snippet("SkewHeap")]
+impl<T: Ord> SkewHeap<T> {
     pub fn is_empty(&self) -> bool {
         self.0.is_none()
     }
@@ -74,8 +76,8 @@ impl<T: Ord> SkewHeap<T> {
     pub fn push(&mut self, x: T) {
         let n = SkewHeap(Some(Box::new(SkewHeapNode {
             v: x,
-            l: SkewHeap::new(),
-            r: SkewHeap::new(),
+            l: SkewHeap::default(),
+            r: SkewHeap::default(),
             length: 1,
         })));
         self.meld(n);
@@ -104,7 +106,7 @@ fn test_skew_heap() {
 
     let size = 100_000;
     let mut bin_heap = std::collections::BinaryHeap::new();
-    let mut skew_heap = SkewHeap::new();
+    let mut skew_heap = SkewHeap::default();
 
     for _ in 0..size {
         let item = rng.next_u64();
@@ -126,7 +128,7 @@ fn test_skew_heap_real() {
 
     let size = 1_000_000;
     let mut bin_heap = std::collections::BinaryHeap::new();
-    let mut skew_heap = SkewHeap::new();
+    let mut skew_heap = SkewHeap::default();
 
     for _ in 0..size {
         if rng.next_f64() > 0.3 {

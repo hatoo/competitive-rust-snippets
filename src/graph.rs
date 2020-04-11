@@ -99,10 +99,7 @@ impl LCA {
             }
         }
 
-        LCA {
-            depth: depth,
-            parent: parent,
-        }
+        LCA { depth, parent }
     }
 
     pub fn lca(&self, mut a: usize, mut b: usize) -> usize {
@@ -158,9 +155,9 @@ impl Tree {
         }
 
         Tree {
-            root: root,
-            parent: parent,
-            childs: childs,
+            root,
+            parent,
+            childs,
         }
     }
 }
@@ -227,9 +224,9 @@ impl HeavyLightDecomposition {
         }
 
         HeavyLightDecomposition {
-            ids: ids,
-            parents: parents,
-            parts: parts,
+            ids,
+            parents,
+            parts,
         }
     }
 }

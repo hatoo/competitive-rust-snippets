@@ -1,5 +1,4 @@
 use cargo_snippet::snippet;
-use std;
 
 /// IntervalHeap
 #[snippet("IntervalHeap")]
@@ -114,7 +113,7 @@ impl<T: Ord + Eq> IntervalHeap<T> {
                     && unsafe { self.data.get_unchecked(k + 2) }
                         < unsafe { self.data.get_unchecked(k) }
                 {
-                    k = k + 2;
+                    k += 2;
                 }
                 // if self.data[i] > self.data[k] {
                 if unsafe { self.data.get_unchecked(i) } > unsafe { self.data.get_unchecked(k) } {
@@ -139,7 +138,7 @@ impl<T: Ord + Eq> IntervalHeap<T> {
                     && unsafe { self.data.get_unchecked(k + 2) }
                         > unsafe { self.data.get_unchecked(k) }
                 {
-                    k = k + 2;
+                    k += 2;
                 }
                 // if self.data[i] < self.data[k] {
                 if unsafe { self.data.get_unchecked(i) } < unsafe { self.data.get_unchecked(k) } {
@@ -212,7 +211,7 @@ impl<T: Ord + Eq> LimitedIntervalHeap<T> {
     fn new(limit: usize) -> LimitedIntervalHeap<T> {
         LimitedIntervalHeap {
             heap: IntervalHeap::with_capacity(limit),
-            limit: limit,
+            limit,
         }
     }
 
@@ -228,19 +227,17 @@ impl<T: Ord + Eq> LimitedIntervalHeap<T> {
         if self.heap.len() < self.limit {
             self.heap.push(x);
             None
-        } else {
-            if self.heap.data[0] < x {
-                let mut x = x;
-                std::mem::swap(&mut x, &mut self.heap.data[0]);
-                if self.heap.len() >= 2 && self.heap.data[0] > self.heap.data[1] {
-                    self.heap.data.swap(0, 1);
-                }
-                self.heap.down(0);
-
-                Some(x)
-            } else {
-                Some(x)
+        } else if self.heap.data[0] < x {
+            let mut x = x;
+            std::mem::swap(&mut x, &mut self.heap.data[0]);
+            if self.heap.len() >= 2 && self.heap.data[0] > self.heap.data[1] {
+                self.heap.data.swap(0, 1);
             }
+            self.heap.down(0);
+
+            Some(x)
+        } else {
+            Some(x)
         }
     }
 

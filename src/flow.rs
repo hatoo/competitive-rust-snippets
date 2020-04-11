@@ -184,10 +184,8 @@ pub fn bipartite_matching(g: &[Vec<usize>]) -> usize {
     let mut mat = vec![None; g.len()];
     let mut used = vec![0; g.len()];
     for v in 0..g.len() {
-        if mat[v].is_none() {
-            if dfs(v, g, &mut mat, &mut used, v + 1) {
-                res += 1;
-            }
+        if mat[v].is_none() && dfs(v, g, &mut mat, &mut used, v + 1) {
+            res += 1;
         }
     }
     res

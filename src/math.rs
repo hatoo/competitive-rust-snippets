@@ -79,13 +79,13 @@ impl Xorshift {
     #[allow(dead_code)]
     pub fn new() -> Xorshift {
         Xorshift {
-            seed: 0xf0fb588ca2196dac,
+            seed: 0xf0fb_588c_a219_6dac,
         }
     }
 
     #[allow(dead_code)]
     pub fn with_seed(seed: u64) -> Xorshift {
-        Xorshift { seed: seed }
+        Xorshift { seed }
     }
 
     #[inline(always)]
@@ -107,8 +107,8 @@ impl Xorshift {
     #[allow(dead_code)]
     pub fn randf(&mut self) -> f64 {
         use std::mem;
-        const UPPER_MASK: u64 = 0x3FF0000000000000;
-        const LOWER_MASK: u64 = 0xFFFFFFFFFFFFF;
+        const UPPER_MASK: u64 = 0x3FF0_0000_0000_0000;
+        const LOWER_MASK: u64 = 0xF_FFFF_FFFF_FFFF;
         let tmp = UPPER_MASK | (self.next() & LOWER_MASK);
         let result: f64 = unsafe { mem::transmute(tmp) };
         result - 1.0
