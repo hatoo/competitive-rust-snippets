@@ -1,6 +1,7 @@
 use cargo_snippet::snippet;
 
 #[snippet("Monoid")]
+#[snippet(include = "Monoid-SUM")]
 #[allow(dead_code)]
 pub trait Monoid {
     type T: Clone;
@@ -10,7 +11,7 @@ pub trait Monoid {
 
 #[snippet("Monoid-SUM")]
 #[allow(dead_code)]
-pub struct SUM;
+pub enum SUM {}
 #[snippet("Monoid-SUM")]
 impl Monoid for SUM {
     type T = u64;
