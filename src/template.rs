@@ -1,3 +1,4 @@
+#![allow(unused_attributes)]
 #![cargo_snippet::snippet("template")]
 
 ///   _           _                    __

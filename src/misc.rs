@@ -34,7 +34,7 @@ impl<T: Ord, U> Ord for CmpBy<T, U> {
 
 #[snippet("adjacent4")]
 #[allow(dead_code)]
-fn adjacent4(x: usize, y: usize, sx: usize, sy: usize) -> Box<Iterator<Item = (usize, usize)>> {
+fn adjacent4(x: usize, y: usize, sx: usize, sy: usize) -> Box<dyn Iterator<Item = (usize, usize)>> {
     // This code looks verbose but is needed to Rust 1.15.
     static DXDY: [(isize, isize); 4] = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
@@ -51,7 +51,7 @@ fn adjacent4(x: usize, y: usize, sx: usize, sy: usize) -> Box<Iterator<Item = (u
 
 #[snippet("adjacent8")]
 #[allow(dead_code)]
-fn adjacent8(x: usize, y: usize, sx: usize, sy: usize) -> Box<Iterator<Item = (usize, usize)>> {
+fn adjacent8(x: usize, y: usize, sx: usize, sy: usize) -> Box<dyn Iterator<Item = (usize, usize)>> {
     // This code looks verbose but is needed to Rust 1.15.
     static DXDY: [(isize, isize); 8] = [
         (-1, 0),
