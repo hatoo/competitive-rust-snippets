@@ -135,7 +135,10 @@ fn test_segtree_vs_cumulative_sum() {
 
     for _ in 0..1000 {
         let r = random_range(&mut rng, 0, size);
-        assert_eq!(seg.query_range(r.clone()), cum_sum[r.end] - cum_sum[r.start]);
+        assert_eq!(
+            seg.query_range(r.clone()),
+            cum_sum[r.end] - cum_sum[r.start]
+        );
     }
 }
 
