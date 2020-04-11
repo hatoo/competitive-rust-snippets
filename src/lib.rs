@@ -20,6 +20,7 @@ pub mod manacher;
 pub mod math;
 pub mod misc;
 pub mod modulo;
+pub mod monoid;
 pub mod rc_list;
 pub mod rev;
 pub mod rolling_hash;
