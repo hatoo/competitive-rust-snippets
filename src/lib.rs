@@ -9,7 +9,6 @@ pub mod bit;
 pub mod bitset;
 pub mod bucket;
 pub mod flow;
-pub mod fnv_hash;
 pub mod geometry;
 pub mod graph;
 pub mod interval_heap;
