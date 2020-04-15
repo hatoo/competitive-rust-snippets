@@ -47,6 +47,10 @@ impl RollingHash {
             .map(|v| v.1.len() - 1)
             .unwrap_or(0)
     }
+
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
 }
 
 #[test]

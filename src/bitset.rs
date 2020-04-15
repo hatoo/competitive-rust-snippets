@@ -59,6 +59,7 @@ impl std::ops::Index<usize> for BitSet {
 }
 
 #[snippet("BitSet")]
+#[allow(clippy::suspicious_op_assign_impl)]
 impl std::ops::ShlAssign<usize> for BitSet {
     fn shl_assign(&mut self, x: usize) {
         let q = x >> 6;
@@ -101,6 +102,7 @@ impl std::ops::Shl<usize> for BitSet {
 }
 
 #[snippet("BitSet")]
+#[allow(clippy::suspicious_op_assign_impl)]
 impl std::ops::ShrAssign<usize> for BitSet {
     fn shr_assign(&mut self, x: usize) {
         let q = x >> 6;

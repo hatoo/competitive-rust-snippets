@@ -235,6 +235,7 @@ use std::cmp::min;
 
 #[snippet("articulation_points")]
 pub fn articulation_points(g: &[Vec<usize>]) -> Vec<usize> {
+    #[allow(clippy::too_many_arguments)]
     fn dfs(
         i: usize,
         p: usize,
@@ -298,6 +299,7 @@ pub fn articulation_points(g: &[Vec<usize>]) -> Vec<usize> {
 
 #[snippet("bridges")]
 pub fn bridges(g: &[Vec<usize>]) -> Vec<(usize, usize)> {
+    #[allow(clippy::too_many_arguments)]
     fn dfs(
         i: usize,
         p: usize,

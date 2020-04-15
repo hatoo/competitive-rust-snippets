@@ -23,11 +23,11 @@ impl Vector2D {
     pub fn det(self, other: Vector2D) -> f64 {
         Self::add(self.0 * other.1, -self.1 * other.0)
     }
-    pub fn len(&self) -> f64 {
+    pub fn length(&self) -> f64 {
         f64::sqrt((self.0).powi(2) + (self.1).powi(2))
     }
     pub fn unit(self) -> Vector2D {
-        let l = self.len();
+        let l = self.length();
         Vector2D(self.0 / l, self.1 / l)
     }
     pub fn normal(self) -> Vector2D {
