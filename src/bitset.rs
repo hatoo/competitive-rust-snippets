@@ -1,10 +1,9 @@
 use cargo_snippet::snippet;
-use std;
 
 #[snippet("BitSet")]
-const TRUE: &'static bool = &true;
+const TRUE: &bool = &true;
 #[snippet("BitSet")]
-const FALSE: &'static bool = &false;
+const FALSE: &bool = &false;
 
 #[snippet("BitSet")]
 #[derive(Clone, Debug)]
@@ -20,7 +19,7 @@ impl BitSet {
     pub fn new(size: usize) -> BitSet {
         BitSet {
             buf: vec![0; (size + 63) / 64],
-            size: size,
+            size,
         }
     }
 
@@ -60,6 +59,7 @@ impl std::ops::Index<usize> for BitSet {
 }
 
 #[snippet("BitSet")]
+#[allow(clippy::suspicious_op_assign_impl)]
 impl std::ops::ShlAssign<usize> for BitSet {
     fn shl_assign(&mut self, x: usize) {
         let q = x >> 6;
@@ -102,6 +102,7 @@ impl std::ops::Shl<usize> for BitSet {
 }
 
 #[snippet("BitSet")]
+#[allow(clippy::suspicious_op_assign_impl)]
 impl std::ops::ShrAssign<usize> for BitSet {
     fn shr_assign(&mut self, x: usize) {
         let q = x >> 6;

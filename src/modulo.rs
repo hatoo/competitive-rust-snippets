@@ -142,7 +142,7 @@ fn mat_mul2(x: &[u64; 4], y: &[u64; 4], p: u64) -> [u64; 4] {
 #[allow(dead_code)]
 /// Matrix pow
 fn pow_mat(m: &[u64; 4], n: u64, p: u64) -> [u64; 4] {
-    let mut m = m.clone();
+    let mut m = *m;
     let mut res = [1, 0, 1, 0];
 
     for i in 0.. {

@@ -48,8 +48,6 @@ impl UFT {
     }
 }
 
-use std;
-
 #[snippet("WeightedUFT")]
 /// https://qiita.com/drken/items/cce6fc5c579051e64fab
 pub struct WeightedUFT {

@@ -1,5 +1,4 @@
 use cargo_snippet::snippet;
-use std;
 
 #[snippet("SEG_LAZY")]
 #[allow(dead_code)]
@@ -17,9 +16,9 @@ impl<T: SEGimpl> SEG<T> {
     pub fn new(n: usize, zero: T::Elem) -> SEG<T> {
         let n = (1..).map(|i| 1 << i).find(|&x| x >= n).unwrap();
         SEG {
-            n: n,
+            n,
             buf: vec![zero.clone(); 2 * n],
-            zero: zero,
+            zero,
             phantom: std::marker::PhantomData,
         }
     }
@@ -35,6 +34,7 @@ impl<T: SEGimpl> SEG<T> {
         }
     }
 
+    #[allow(clippy::many_single_char_names)]
     #[allow(dead_code)]
     pub fn update(&mut self, i: usize, x: T::Elem) {
         let mut k = i + self.n - 1;
@@ -55,6 +55,7 @@ impl<T: SEGimpl> SEG<T> {
     }
 
     #[allow(dead_code)]
+    #[allow(clippy::many_single_char_names)]
     fn r(&mut self, x: &T::A, a: usize, b: usize, k: usize, l: usize, r: usize) {
         self.eval(k, l, r);
         if r <= a || b <= l {
@@ -85,6 +86,7 @@ impl<T: SEGimpl> SEG<T> {
     }
 
     #[allow(dead_code)]
+    #[allow(clippy::many_single_char_names)]
     fn q(&mut self, a: usize, b: usize, k: usize, l: usize, r: usize) -> Option<T::Elem> {
         self.eval(k, l, r);
         if r <= a || b <= l {

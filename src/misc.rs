@@ -1,5 +1,4 @@
 use cargo_snippet::snippet;
-use std;
 
 #[snippet("M")]
 #[allow(dead_code)]
@@ -34,26 +33,24 @@ impl<T: Ord, U> Ord for CmpBy<T, U> {
 
 #[snippet("adjacent4")]
 #[allow(dead_code)]
-fn adjacent4(x: usize, y: usize, sx: usize, sy: usize) -> Box<Iterator<Item = (usize, usize)>> {
-    // This code looks verbose but is needed to Rust 1.15.
-    static DXDY: [(isize, isize); 4] = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
-    Box::new(DXDY.iter().filter_map(move |&(dx, dy)| {
-        let nx = x as isize + dx;
-        let ny = y as isize + dy;
-        if nx >= 0 && nx < sx as isize && ny >= 0 && ny < sy as isize {
-            Some((nx as usize, ny as usize))
-        } else {
-            None
-        }
-    }))
+fn adjacent4(x: usize, y: usize, sx: usize, sy: usize) -> impl Iterator<Item = (usize, usize)> {
+    [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        .iter()
+        .filter_map(move |&(dx, dy)| {
+            let nx = x as isize + dx;
+            let ny = y as isize + dy;
+            if nx >= 0 && nx < sx as isize && ny >= 0 && ny < sy as isize {
+                Some((nx as usize, ny as usize))
+            } else {
+                None
+            }
+        })
 }
 
 #[snippet("adjacent8")]
 #[allow(dead_code)]
-fn adjacent8(x: usize, y: usize, sx: usize, sy: usize) -> Box<Iterator<Item = (usize, usize)>> {
-    // This code looks verbose but is needed to Rust 1.15.
-    static DXDY: [(isize, isize); 8] = [
+fn adjacent8(x: usize, y: usize, sx: usize, sy: usize) -> impl Iterator<Item = (usize, usize)> {
+    [
         (-1, 0),
         (1, 0),
         (0, -1),
@@ -62,9 +59,9 @@ fn adjacent8(x: usize, y: usize, sx: usize, sy: usize) -> Box<Iterator<Item = (u
         (-1, 1),
         (1, -1),
         (1, 1),
-    ];
-
-    Box::new(DXDY.iter().filter_map(move |&(dx, dy)| {
+    ]
+    .iter()
+    .filter_map(move |&(dx, dy)| {
         let nx = x as isize + dx;
         let ny = y as isize + dy;
 
@@ -73,7 +70,7 @@ fn adjacent8(x: usize, y: usize, sx: usize, sy: usize) -> Box<Iterator<Item = (u
         } else {
             None
         }
-    }))
+    })
 }
 
 #[test]

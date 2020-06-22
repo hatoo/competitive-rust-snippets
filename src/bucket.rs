@@ -1,5 +1,4 @@
 use cargo_snippet::snippet;
-use std;
 use std::cmp::{max, min};
 // Too complicated
 
@@ -27,8 +26,8 @@ where
 
         Bucket {
             buf: init_elem,
-            parent: parent,
-            sqrt: sqrt,
+            parent,
+            sqrt,
             phantom_i: std::marker::PhantomData,
         }
     }
