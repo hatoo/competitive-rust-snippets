@@ -54,7 +54,7 @@ mod util {
     }
 
     #[allow(dead_code)]
-    pub fn with_bufwriter<F: FnOnce(BufWriter<StdoutLock>) -> ()>(f: F) {
+    pub fn with_bufwriter<F: FnOnce(BufWriter<StdoutLock>)>(f: F) {
         let out = stdout();
         let writer = BufWriter::new(out.lock());
         f(writer)
