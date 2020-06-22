@@ -4,7 +4,7 @@
 
 ## Platform
 
-* Rust 1.15.1 (due to Atcoder)
+* Rust 1.42
 
 ## Usage
 
