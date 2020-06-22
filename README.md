@@ -1,7 +1,5 @@
 # My Rust snippets for competitive programming
 
-[document](https://hatoo.github.io/competitive-rust-snippets/target/doc/competitive_rust_snippets/index.html)
-
 ## Platform
 
 * Rust 1.42
