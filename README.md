@@ -2,9 +2,11 @@
 
 ## Platform
 
-* Rust 1.15.1 (due to Atcoder)
+* Rust 1.42
 
 ## Usage
 
 1. Install [cargo-snippet](https://github.com/hatoo/cargo-snippet "cargo-snippet")
 2. `$ cargo snippet`
+
+Or you can download snippet from [here](https://cargo-snippet.hatoo.io/).

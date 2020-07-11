@@ -2,8 +2,8 @@
 //! This module doesn't contains snippet.
 
 use rand::Rng;
-use std::ops::Range;
 use std::cmp::{max, min};
+use std::ops::Range;
 
 /// return a..b
 /// l <= a <= b <= r

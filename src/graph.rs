@@ -1,4 +1,5 @@
-#[snippet = "strongly_connected_component"]
+use cargo_snippet::snippet;
+#[snippet("strongly_connected_component")]
 #[allow(dead_code)]
 pub fn strongly_connected_component(g: &[Vec<usize>]) -> Vec<usize> {
     fn dfs(v: usize, g: &[Vec<usize>], vs: &mut Vec<usize>, used: &mut [bool]) {
@@ -51,14 +52,14 @@ pub fn strongly_connected_component(g: &[Vec<usize>]) -> Vec<usize> {
     cmp
 }
 
-#[snippet = "LCA"]
+#[snippet("LCA")]
 #[allow(dead_code)]
 pub struct LCA {
     pub depth: Vec<usize>,
     pub parent: Vec<Vec<Option<usize>>>,
 }
 
-#[snippet = "LCA"]
+#[snippet("LCA")]
 #[allow(dead_code)]
 impl LCA {
     pub fn new(g: &[Vec<usize>]) -> LCA {
@@ -98,10 +99,7 @@ impl LCA {
             }
         }
 
-        LCA {
-            depth: depth,
-            parent: parent,
-        }
+        LCA { depth, parent }
     }
 
     pub fn lca(&self, mut a: usize, mut b: usize) -> usize {
@@ -128,16 +126,16 @@ impl LCA {
     }
 }
 
-#[snippet = "Tree"]
-#[snippet = "HeavyLightDecomposition"]
+#[snippet("Tree")]
+#[snippet("HeavyLightDecomposition")]
 pub struct Tree {
     pub root: usize,
     pub parent: Vec<Option<usize>>,
     pub childs: Vec<Vec<usize>>,
 }
 
-#[snippet = "Tree"]
-#[snippet = "HeavyLightDecomposition"]
+#[snippet("Tree")]
+#[snippet("HeavyLightDecomposition")]
 impl Tree {
     pub fn from_neighbor_list(n: usize, root: usize, g: &[Vec<usize>]) -> Tree {
         let mut parent = vec![None; n];
@@ -157,21 +155,21 @@ impl Tree {
         }
 
         Tree {
-            root: root,
-            parent: parent,
-            childs: childs,
+            root,
+            parent,
+            childs,
         }
     }
 }
 
-#[snippet = "HeavyLightDecomposition"]
+#[snippet("HeavyLightDecomposition")]
 pub struct HeavyLightDecomposition {
     pub ids: Vec<(usize, usize)>,
     pub parents: Vec<Option<(usize, usize)>>,
     pub parts: Vec<Vec<usize>>,
 }
 
-#[snippet = "HeavyLightDecomposition"]
+#[snippet("HeavyLightDecomposition")]
 impl HeavyLightDecomposition {
     pub fn new(tree: &Tree) -> HeavyLightDecomposition {
         fn size(i: usize, tree: &Tree, memo: &mut [Option<usize>]) -> usize {
@@ -182,7 +180,8 @@ impl HeavyLightDecomposition {
             let res = tree.childs[i]
                 .iter()
                 .map(|&to| size(to, tree, memo))
-                .sum::<usize>() + 1;
+                .sum::<usize>()
+                + 1;
             memo[i] = Some(res);
             res
         }
@@ -225,17 +224,18 @@ impl HeavyLightDecomposition {
         }
 
         HeavyLightDecomposition {
-            ids: ids,
-            parents: parents,
-            parts: parts,
+            ids,
+            parents,
+            parts,
         }
     }
 }
 
 use std::cmp::min;
 
-#[snippet = "articulation_points"]
+#[snippet("articulation_points")]
 pub fn articulation_points(g: &[Vec<usize>]) -> Vec<usize> {
+    #[allow(clippy::too_many_arguments)]
     fn dfs(
         i: usize,
         p: usize,
@@ -297,8 +297,9 @@ pub fn articulation_points(g: &[Vec<usize>]) -> Vec<usize> {
     res
 }
 
-#[snippet = "bridges"]
+#[snippet("bridges")]
 pub fn bridges(g: &[Vec<usize>]) -> Vec<(usize, usize)> {
+    #[allow(clippy::too_many_arguments)]
     fn dfs(
         i: usize,
         p: usize,

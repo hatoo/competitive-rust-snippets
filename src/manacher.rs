@@ -1,11 +1,12 @@
-#[snippet = "Manacher"]
+use cargo_snippet::snippet;
+#[snippet("Manacher")]
 #[allow(dead_code)]
 /// Manacher's algorithm
 pub struct Manacher {
     r: Vec<usize>,
 }
 
-#[snippet = "Manacher"]
+#[snippet("Manacher")]
 impl Manacher {
     #[allow(dead_code)]
     pub fn new<T: Eq>(seq: &[T]) -> Manacher {
@@ -26,13 +27,13 @@ impl Manacher {
             j -= k;
         }
 
-        Manacher { r: r }
+        Manacher { r }
     }
 
     /// [l,r]
     #[allow(dead_code)]
     pub fn is_palindrome(&self, l: usize, r: usize) -> bool {
-        self.r[l + r] >= r - l + 1
+        self.r[l + r] > r - l
     }
 
     #[allow(dead_code)]

@@ -1,8 +1,8 @@
+use cargo_snippet::snippet;
 use std::cmp::{max, min};
-use std;
 // Too complicated
 
-#[snippet = "Bucket"]
+#[snippet("Bucket")]
 pub struct Bucket<I: BucketImpl> {
     buf: Vec<I::Elem>,
     parent: Vec<I::Parent>,
@@ -10,7 +10,7 @@ pub struct Bucket<I: BucketImpl> {
     phantom_i: std::marker::PhantomData<I>,
 }
 
-#[snippet = "Bucket"]
+#[snippet("Bucket")]
 impl<I: BucketImpl> Bucket<I>
 where
     I::Parent: Clone,
@@ -26,8 +26,8 @@ where
 
         Bucket {
             buf: init_elem,
-            parent: parent,
-            sqrt: sqrt,
+            parent,
+            sqrt,
             phantom_i: std::marker::PhantomData,
         }
     }
@@ -76,7 +76,8 @@ where
     pub fn sum(&mut self, l: usize, r: usize) -> Option<I::R> {
         let (left, mid, right) = self.ranges(l, r);
 
-        let mut iter = left.chain(right)
+        let mut iter = left
+            .chain(right)
             .map(|i| I::elem_to_result(&self.buf[i], &self.parent[i / self.sqrt]))
             .chain(mid.map(|i| I::parent_to_result(&self.parent[i])));
 
@@ -91,28 +92,28 @@ where
     }
 }
 
-#[snippet = "Bucket"]
+#[snippet("Bucket")]
 pub trait BucketImpl {
     type Elem;
     type Parent;
     type A;
     type R;
 
-    fn reduce_parent(&mut Self::Parent, &Self::Elem);
+    fn reduce_parent(p: &mut Self::Parent, e: &Self::Elem);
 
-    fn add(&mut Self::Parent, &mut Self::Elem, &Self::A);
-    fn add_parent(&mut Self::Parent, &Self::A);
+    fn add(p: &mut Self::Parent, e: &mut Self::Elem, v: &Self::A);
+    fn add_parent(p: &mut Self::Parent, d: &Self::A);
 
-    fn parent_to_result(&Self::Parent) -> Self::R;
-    fn elem_to_result(&Self::Elem, p: &Self::Parent) -> Self::R;
-    fn reduce_result(&mut Self::R, &Self::R);
+    fn parent_to_result(p: &Self::Parent) -> Self::R;
+    fn elem_to_result(e: &Self::Elem, p: &Self::Parent) -> Self::R;
+    fn reduce_result(a: &mut Self::R, b: &Self::R);
 }
 
-#[snippet = "Bucket-RangeAddQueryMax"]
+#[snippet("Bucket-RangeAddQueryMax")]
 #[allow(dead_code)]
 struct RangeAddQueryMax();
 
-#[snippet = "Bucket-RangeAddQueryMax"]
+#[snippet("Bucket-RangeAddQueryMax")]
 impl BucketImpl for RangeAddQueryMax {
     type Elem = u64;
     // (max, delta)
@@ -149,8 +150,8 @@ impl BucketImpl for RangeAddQueryMax {
 
 #[test]
 fn test_range_add_query_max() {
+    use crate::util::random_range;
     use rand::{Rng, SeedableRng, StdRng};
-    use util::random_range;
 
     // Test against naive vector
     let size = 1000;

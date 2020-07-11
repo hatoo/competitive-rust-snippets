@@ -1,58 +1,56 @@
-use std;
+use cargo_snippet::snippet;
 
-#[snippet = "M"]
+#[snippet("M")]
 #[allow(dead_code)]
 pub const M: u64 = 1_000_000_007;
 
-#[snippet = "INF"]
+#[snippet("INF")]
 #[allow(dead_code)]
 pub const INF: u64 = 1 << 60;
 
-#[snippet = "CmpBy"]
+#[snippet("CmpBy")]
 pub struct CmpBy<T, U>(T, U);
-#[snippet = "CmpBy"]
+#[snippet("CmpBy")]
 impl<T: PartialEq, U> PartialEq for CmpBy<T, U> {
     fn eq(&self, other: &Self) -> bool {
         (self.0).eq(&other.0)
     }
 }
-#[snippet = "CmpBy"]
+#[snippet("CmpBy")]
 impl<T: Eq, U> Eq for CmpBy<T, U> {}
-#[snippet = "CmpBy"]
+#[snippet("CmpBy")]
 impl<T: PartialOrd, U> PartialOrd for CmpBy<T, U> {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         (self.0).partial_cmp(&other.0)
     }
 }
-#[snippet = "CmpBy"]
+#[snippet("CmpBy")]
 impl<T: Ord, U> Ord for CmpBy<T, U> {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
         (self.0).cmp(&other.0)
     }
 }
 
-#[snippet = "adjacent4"]
+#[snippet("adjacent4")]
 #[allow(dead_code)]
-fn adjacent4(x: usize, y: usize, sx: usize, sy: usize) -> Box<Iterator<Item = (usize, usize)>> {
-    // This code looks verbose but is needed to Rust 1.15.
-    static DXDY: [(isize, isize); 4] = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
-    Box::new(DXDY.iter().filter_map(move |&(dx, dy)| {
-        let nx = x as isize + dx;
-        let ny = y as isize + dy;
-        if nx >= 0 && nx < sx as isize && ny >= 0 && ny < sy as isize {
-            Some((nx as usize, ny as usize))
-        } else {
-            None
-        }
-    }))
+fn adjacent4(x: usize, y: usize, sx: usize, sy: usize) -> impl Iterator<Item = (usize, usize)> {
+    [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        .iter()
+        .filter_map(move |&(dx, dy)| {
+            let nx = x as isize + dx;
+            let ny = y as isize + dy;
+            if nx >= 0 && nx < sx as isize && ny >= 0 && ny < sy as isize {
+                Some((nx as usize, ny as usize))
+            } else {
+                None
+            }
+        })
 }
 
-#[snippet = "adjacent8"]
+#[snippet("adjacent8")]
 #[allow(dead_code)]
-fn adjacent8(x: usize, y: usize, sx: usize, sy: usize) -> Box<Iterator<Item = (usize, usize)>> {
-    // This code looks verbose but is needed to Rust 1.15.
-    static DXDY: [(isize, isize); 8] = [
+fn adjacent8(x: usize, y: usize, sx: usize, sy: usize) -> impl Iterator<Item = (usize, usize)> {
+    [
         (-1, 0),
         (1, 0),
         (0, -1),
@@ -61,9 +59,9 @@ fn adjacent8(x: usize, y: usize, sx: usize, sy: usize) -> Box<Iterator<Item = (u
         (-1, 1),
         (1, -1),
         (1, 1),
-    ];
-
-    Box::new(DXDY.iter().filter_map(move |&(dx, dy)| {
+    ]
+    .iter()
+    .filter_map(move |&(dx, dy)| {
         let nx = x as isize + dx;
         let ny = y as isize + dy;
 
@@ -72,7 +70,7 @@ fn adjacent8(x: usize, y: usize, sx: usize, sy: usize) -> Box<Iterator<Item = (u
         } else {
             None
         }
-    }))
+    })
 }
 
 #[test]

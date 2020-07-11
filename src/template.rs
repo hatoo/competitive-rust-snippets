@@ -1,9 +1,22 @@
-#![snippet = "template"]
+#![allow(unused_attributes)]
+#![cargo_snippet::snippet("template")]
 
+///   _           _                    __
+///  | |         | |                  / /
+///  | |__   __ _| |_ ___   ___      / /
+///  | '_ \ / _` | __/ _ \ / _ \    / /
+///  | | | | (_| | || (_) | (_) |  / /   _ _   _                                 _                    _                  _
+///  |_| |_|\__,_|\__\___/ \___/  /_/ | (_) | (_)                               | |                  (_)                | |
+///    ___ ___  _ __ ___  _ __   ___| |_ _| |_ ___   _____ ______ _ __ _   _ ___| |_ ______ ___ _ __  _ _ __  _ __   ___| |_ ___
+///   / __/ _ \| '_ ` _ \| '_ \ / _ \ __| | __| \ \ / / _ \______| '__| | | / __| __|______/ __| '_ \| | '_ \| '_ \ / _ \ __/ __|
+///  | (_| (_) | | | | | | |_) |  __/ |_| | |_| |\ V /  __/      | |  | |_| \__ \ |_       \__ \ | | | | |_) | |_) |  __/ |_\__ \
+///   \___\___/|_| |_| |_| .__/ \___|\__|_|\__|_| \_/ \___|      |_|   \__,_|___/\__|      |___/_| |_|_| .__/| .__/ \___|\__|___/
+///                      | |                                                                           | |   | |
+///                      |_|                                                                           |_|   |_|
 /// https://github.com/hatoo/competitive-rust-snippets
 
 #[allow(unused_imports)]
-use std::cmp::{max, min, Ordering};
+use std::cmp::{max, min, Ordering, Reverse};
 #[allow(unused_imports)]
 use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque};
 #[allow(unused_imports)]
@@ -41,7 +54,7 @@ mod util {
     }
 
     #[allow(dead_code)]
-    pub fn with_bufwriter<F: FnOnce(BufWriter<StdoutLock>) -> ()>(f: F) {
+    pub fn with_bufwriter<F: FnOnce(BufWriter<StdoutLock>)>(f: F) {
         let out = stdout();
         let writer = BufWriter::new(out.lock());
         f(writer)
@@ -89,13 +102,6 @@ macro_rules! get {
               get!($($t),*)
           ).collect::<Vec<_>>()
       };
-  }
-
-#[allow(unused_macros)]
-macro_rules! debug {
-      ($($a:expr),*) => {
-          eprintln!(concat!($(stringify!($a), " = {:?}, "),*), $($a),*);
-      }
   }
 
 const BIG_STACK_SIZE: bool = true;

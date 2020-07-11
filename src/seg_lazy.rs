@@ -1,6 +1,6 @@
-use std;
+use cargo_snippet::snippet;
 
-#[snippet = "SEG_LAZY"]
+#[snippet("SEG_LAZY")]
 #[allow(dead_code)]
 /// Lazy Segment Tree
 pub struct SEG<T: SEGimpl> {
@@ -10,15 +10,15 @@ pub struct SEG<T: SEGimpl> {
     phantom: std::marker::PhantomData<T>,
 }
 
-#[snippet = "SEG_LAZY"]
+#[snippet("SEG_LAZY")]
 impl<T: SEGimpl> SEG<T> {
     #[allow(dead_code)]
     pub fn new(n: usize, zero: T::Elem) -> SEG<T> {
         let n = (1..).map(|i| 1 << i).find(|&x| x >= n).unwrap();
         SEG {
-            n: n,
+            n,
             buf: vec![zero.clone(); 2 * n],
-            zero: zero,
+            zero,
             phantom: std::marker::PhantomData,
         }
     }
@@ -34,6 +34,7 @@ impl<T: SEGimpl> SEG<T> {
         }
     }
 
+    #[allow(clippy::many_single_char_names)]
     #[allow(dead_code)]
     pub fn update(&mut self, i: usize, x: T::Elem) {
         let mut k = i + self.n - 1;
@@ -54,6 +55,7 @@ impl<T: SEGimpl> SEG<T> {
     }
 
     #[allow(dead_code)]
+    #[allow(clippy::many_single_char_names)]
     fn r(&mut self, x: &T::A, a: usize, b: usize, k: usize, l: usize, r: usize) {
         self.eval(k, l, r);
         if r <= a || b <= l {
@@ -84,6 +86,7 @@ impl<T: SEGimpl> SEG<T> {
     }
 
     #[allow(dead_code)]
+    #[allow(clippy::many_single_char_names)]
     fn q(&mut self, a: usize, b: usize, k: usize, l: usize, r: usize) -> Option<T::Elem> {
         self.eval(k, l, r);
         if r <= a || b <= l {
@@ -113,7 +116,7 @@ impl<T: SEGimpl> SEG<T> {
     }
 }
 
-#[snippet = "SEG_LAZY"]
+#[snippet("SEG_LAZY")]
 pub trait SEGimpl {
     type Elem: Clone;
     type A;
@@ -126,9 +129,9 @@ pub trait SEGimpl {
 }
 
 #[allow(dead_code)]
-#[snippet = "RangeAddSum"]
+#[snippet("RangeAddSum")]
 struct RangeAddSum();
-#[snippet = "RangeAddSum"]
+#[snippet("RangeAddSum")]
 impl SEGimpl for RangeAddSum {
     type Elem = (u64, u64);
     type A = u64;
@@ -177,7 +180,7 @@ impl SEGimpl for NonCommutative {
 
 #[test]
 fn test_seg_lazy() {
-    use util;
+    use crate::util;
     use rand::{Rng, SeedableRng, StdRng};
 
     let size = 1000;
@@ -214,7 +217,7 @@ fn test_seg_lazy() {
 
 #[test]
 fn test_seg_lazy_non_commutative() {
-    use util;
+    use crate::util;
     use rand::{Rng, SeedableRng, StdRng};
     let mut rng = StdRng::from_seed(&[1, 2, 3, 4, 5]);
 
@@ -240,7 +243,7 @@ use test::Bencher;
 
 #[bench]
 fn bench_lazy_segtree_range_add(b: &mut Bencher) {
-    use util;
+    use crate::util;
     use rand::{Rng, SeedableRng, StdRng};
 
     let size = 10000;
@@ -269,7 +272,7 @@ fn bench_lazy_segtree_range_add(b: &mut Bencher) {
 
 #[bench]
 fn bench_lazy_segtree_query(b: &mut Bencher) {
-    use util;
+    use crate::util;
     use rand::{Rng, SeedableRng, StdRng};
 
     let size = 10000;
