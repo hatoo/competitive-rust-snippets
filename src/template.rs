@@ -16,7 +16,7 @@
 /// https://github.com/hatoo/competitive-rust-snippets
 
 #[allow(unused_imports)]
-use std::cmp::{max, min, Ordering};
+use std::cmp::{max, min, Ordering, Reverse};
 #[allow(unused_imports)]
 use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque};
 #[allow(unused_imports)]
@@ -102,13 +102,6 @@ macro_rules! get {
               get!($($t),*)
           ).collect::<Vec<_>>()
       };
-  }
-
-#[allow(unused_macros)]
-macro_rules! debug {
-      ($($a:expr),*) => {
-          eprintln!(concat!($(stringify!($a), " = {:?}, "),*), $($a),*);
-      }
   }
 
 const BIG_STACK_SIZE: bool = true;
