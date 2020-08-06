@@ -8,5 +8,3 @@
 
 1. Install [cargo-snippet](https://github.com/hatoo/cargo-snippet "cargo-snippet")
 2. `$ cargo snippet`
-
-Or you can download snippet from [here](https://cargo-snippet.hatoo.io/).
