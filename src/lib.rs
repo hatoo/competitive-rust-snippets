@@ -19,6 +19,7 @@ pub mod math;
 pub mod misc;
 pub mod modulo;
 pub mod monoid;
+pub mod pcg;
 pub mod rc_list;
 pub mod rolling_hash;
 pub mod seg_lazy;
